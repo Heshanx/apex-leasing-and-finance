@@ -32,6 +32,18 @@ app.post('/signup',(req,res)=>{
         res.status(201).json({ message: 'User signed up successfully', data });
     });
 });
+app.post ('/login',(req,res)=>{
+    const{User_name,Password} = req.body;
+    const loginsql = 'Select * from signup WHERE User_name=? and Password=?';
+
+    db.query(loginsql,[User_name,Password],(err,results)=>{
+        if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(400).json({ message: 'Invalid credentials' });
+
+        res.status(200).json({ message: 'Login successful', user: results[0] });
+    });
+
+});
 app.listen(5000,()=>{
     console.log("Listning....");
 });

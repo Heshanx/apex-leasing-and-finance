@@ -1,13 +1,26 @@
-import React from 'react';
+import React,{useState} from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const[logemail, setlogemail]= useState('');
+  const[logpassword, setlopassword]=useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate('/dashboard');
+    try{
+      const response = await axios.post('http://localhost:5000/login',{
+        User_name: logemail,
+        Password: logpassword,
+      });
+      alert('login successful')
+      navigate('/dashboard');
+    }catch(error){
+      alert('Login failed '+error.response.data.message);
+
+    }
   };
 
   return (
@@ -31,11 +44,11 @@ const Login = () => {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" id="email" placeholder="Enter your email" />
+            <input type="email" className="form-control" id="email" placeholder="Enter your email" value={logemail} onChange={(event)=>setlogemail(event.target.value)}required />
           </div>
           <div className="form-group mb-3">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Enter your password" />
+            <input type="password" className="form-control" id="password" placeholder="Enter your password" value={logpassword} onChange={(event)=>setlopassword(event.target.value)} required/>
           </div>
           <div className="form-group form-check mb-3">
             <input type="checkbox" className="form-check-input" id="rememberMe" />
