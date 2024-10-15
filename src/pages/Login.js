@@ -1,13 +1,33 @@
-import React from 'react';
+import React,{useState} from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login = () => {
   const navigate = useNavigate();
+  const[logemail, setlogemail]= useState('');
+  const[logpassword, setlopassword]=useState('');
+  const [captchaValue, setCaptchaValue] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate('/dashboard');
+    if(!captchaValue){
+      alert('Please Complete reCAPCHA ');
+      return;
+    }
+    try{
+      const response = await axios.post('http://localhost:5000/login',{
+        User_name: logemail,
+        Password: logpassword,
+        captcha : captchaValue
+      });
+      alert('login successful')
+      navigate('/dashboard');
+    }catch(error){
+      alert('Login failed '+error.response.data.message);
+
+    }
   };
 
   return (
@@ -31,16 +51,21 @@ const Login = () => {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" id="email" placeholder="Enter your email" />
+            <input type="email" className="form-control" id="email" placeholder="Enter your email" value={logemail} onChange={(event)=>setlogemail(event.target.value)}required />
           </div>
           <div className="form-group mb-3">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Enter your password" />
+            <input type="password" className="form-control" id="password" placeholder="Enter your password" value={logpassword} onChange={(event)=>setlopassword(event.target.value)} required/>
           </div>
           <div className="form-group form-check mb-3">
             <input type="checkbox" className="form-check-input" id="rememberMe" />
             <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
-          </div>
+          </div>   
+
+         <div className="form-group form-check mb-3">
+          <ReCAPTCHA sitekey='6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0'onChange={(value)=>setCaptchaValue(value)}/>         
+         </div>
+
           <button type="submit" className="btn btn-dark btn-block mb-3"style={{ backgroundColor: '#004aad', color: '#fff' }}>Login</button>
           <p className="text-center"><a href="#">Forgot Password?</a></p>
           <p className="text-center">Don't have an account? <a href="#">Sign Up</a></p>
