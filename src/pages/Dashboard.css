@@ -1,0 +1,62 @@
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
+  }
+  
+  .carousel-inner img {
+    border-radius: 10px;
+  }  
+
+  .custom-blue-btn {
+    background-color: #004aad;
+    border-color: #004aad;
+  }
+  
+  .custom-blue-btn:hover {
+    background-color: #003a80;
+    border-color: #003a80;
+  }
+  
+  .back-to-top {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .fixed-size {
+    height: 250px; /* Set fixed height for card images */
+    object-fit: cover; /* Maintain aspect ratio and cover the area */
+  }
+  
+  
+  /* Ensure spacing between sections */
+  .container-fluid {
+    padding-bottom: 40px; /* Add spacing between sections */
+  }
+  
+  /* Style adjustments for the Scroll to Top button */
+  .position-fixed {
+    z-index: 1000; /* Ensure it's on top of other content */
+  }
+
+  .custom-scroll-btn {
+    position: relative;
+    padding: 12px 20px;
+    border-radius: 50px; /* Rounded edges */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+  
+  .custom-scroll-btn:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+  }
+  
+  
+  .btn-text {
+    color: #fff; /* Button text color */
+    font-weight: bold; /* Bold text */
+    font-size: 16px; /* Text size */
+  }
+  
+  
