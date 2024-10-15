@@ -1,0 +1,50 @@
+/* LeasingServices.css */
+
+.container-fluid {
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #004aad; /* Brand color for headings */
+  }
+  
+  .card {
+    border: none; /* Remove card border */
+  }
+  
+  .card-img-top {
+    height: 200px; /* Set a fixed height for images */
+    object-fit: cover; /* Cover the area without distorting */
+  }
+  
+  .accordion-item {
+    margin-bottom: 0; /* Remove bottom margin between accordion items */
+  }
+  
+  .accordion-header {
+    cursor: pointer; /* Change cursor for accordion headers */
+  }
+  
+  .accordion-body {
+    padding: 15px; /* Increase padding for better readability */
+  }
+  
+  /* Remove margins or padding in accordion items to minimize space */
+  .accordion .accordion-item {
+    margin: 0; /* No margin between items */
+  }
+  
+  .accordion .accordion-header {
+    padding: 10px 15px; /* Adjust header padding */
+  }
+  
+  .accordion .accordion-body {
+    padding: 10px 15px; /* Adjust body padding */
+  }
+  
+  /* Optional: Adjust overall accordion spacing */
+  .accordion {
+    margin: 0; /* Remove outer margin */
+  }
+  

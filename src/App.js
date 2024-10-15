@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Registration from './pages/Registration';
 import Aboutus from './pages/Aboutus';
 import Loanservices from './pages/Loanservices';
+import Leasingservices from './pages/Leasingservices';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/Registration" element={<Registration/>}/>
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/loanservices" element={<Loanservices />} />
+          <Route path="/leasingservices" element={<Leasingservices />} />
         </Routes>
       </div>
     </Router>

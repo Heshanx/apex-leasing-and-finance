@@ -44,19 +44,14 @@ const Header = () => {
                 
               </li>
               <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${getActiveTab('/leasing')}`}
-                  id="pills-leasing-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-leasing"
-                  type="button"
-                  role="tab"
-                  aria-controls="pills-leasing"
-                  aria-selected="false"
+              <Link
+                  className={`nav-link ${getActiveTab('/leasingservices')}`}
+                  id="pills-leasingservices-tab"
+                  to="/leasingservices"
                   style={{ color: '#004aad' }}
                 >
                   Leasing Services
-                </button>
+                </Link>
               </li>
               <li className="nav-item" role="presentation">
                 <button
