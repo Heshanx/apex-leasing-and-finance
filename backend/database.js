@@ -3,13 +3,24 @@ const mysql = require('mysql');
 const cors = require('cors');
 const bodyparser =require('body-parser');
 const axios = require('axios');
+const ratelimiter = require('express-rate-limit');
 
 const secretkey = '6LccvGEqAAAAAL9ykyTySjS4PCOQb5xB9Z0LMDgc';
+
+const limiter =ratelimiter({
+    windowMs : 15 * 60 *1000,
+    max : 100,
+    message : 'Too many Request are there. ',
+});
+
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000'})); //
 app.use(express.json());
 app.use(bodyparser.urlencoded({ extended: true })); 
+app.use(limiter);
+
+
 
 const db = mysql.createConnection({
     host :'127.0.0.1',
@@ -35,7 +46,7 @@ app.post('/signup',(req,res)=>{
         res.status(201).json({ message: 'User signed up successfully', data });
     });
 });
-app.post ('/login',async(req,res)=>{
+app.post ('/login',limiter,async(req,res)=>{
     const{User_name,Password,'g-recaptcha-response': captcha} = req.body;
     if(!captcha){
         return res.send('Please Complete the recapcha');
@@ -48,11 +59,15 @@ app.post ('/login',async(req,res)=>{
 
         if(!Success){
             return res.response.send('Failed reCAPCHA Verification');
+            throw new Error('Complete the reCAPCHA');
         }
     const loginsql = 'Select * from signup WHERE User_name=? and Password=?';
     db.query(loginsql,[User_name,Password],(err,results)=>{
         if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(400).json({ message: 'Invalid credentials' });
+        if (results.length === 0) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+            throw new Error('Invalid Username Or Password ');
+        }
 
         res.status(200).json({ message: 'Login successful', user: results[0] });
     });
