@@ -5,7 +5,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Registration from './pages/Registration';
 import Aboutus from './pages/Aboutus';
-
+import Loanservices from './pages/Loanservices';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/Registration" element={<Registration/>}/>
           <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/loanservices" element={<Loanservices />} />
         </Routes>
       </div>
     </Router>
