@@ -3,7 +3,8 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-light text-center text-lg-start" style={{ marginTop: 'auto', padding: '20px 0' }}>
+    
+    <footer className="bg-light text-center text-lg-start" style={{ marginTop: 'auto', padding: '20px 0'}}>
       <div className="container p-4">
         <section>
           <h5>Apex Leasing and Finance</h5>

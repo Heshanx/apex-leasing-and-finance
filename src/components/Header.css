@@ -1,0 +1,23 @@
+.nav-link.active {
+    background-color: #004aad;
+    color: white !important;
+  }
+
+.nav-link {
+    color: #004aad;
+  }
+  
+  .nav-link.active {
+    background-color: #004aad !important;
+    color: white !important;
+  }
+  
+  .nav-link:focus {
+    box-shadow: none;
+  }
+  
+
+  .nav-link:hover {
+    color: #003399;
+  }
+  
