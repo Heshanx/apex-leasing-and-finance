@@ -1,50 +1,49 @@
-/* LeasingServices.css */
 
 .container-fluid {
-    background-color: #f8f9fa; /* Light background color */
+    background-color: #f8f9fa;
     padding: 20px;
   }
   
   h2 {
-    color: #004aad; /* Brand color for headings */
+    color: #004aad;
   }
   
   .card {
-    border: none; /* Remove card border */
+    border: none;
   }
   
   .card-img-top {
-    height: 200px; /* Set a fixed height for images */
-    object-fit: cover; /* Cover the area without distorting */
+    height: 200px;
+    object-fit: cover;
   }
   
   .accordion-item {
-    margin-bottom: 0; /* Remove bottom margin between accordion items */
+    margin-bottom: 0;
   }
   
   .accordion-header {
-    cursor: pointer; /* Change cursor for accordion headers */
+    cursor: pointer;
   }
   
   .accordion-body {
-    padding: 15px; /* Increase padding for better readability */
+    padding: 15px;
   }
   
-  /* Remove margins or padding in accordion items to minimize space */
+
   .accordion .accordion-item {
-    margin: 0; /* No margin between items */
+    margin: 0;
   }
   
   .accordion .accordion-header {
-    padding: 10px 15px; /* Adjust header padding */
+    padding: 10px 15px;
   }
   
   .accordion .accordion-body {
-    padding: 10px 15px; /* Adjust body padding */
+    padding: 10px 15px;
   }
   
-  /* Optional: Adjust overall accordion spacing */
+
   .accordion {
-    margin: 0; /* Remove outer margin */
+    margin: 0;
   }
   

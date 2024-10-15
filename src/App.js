@@ -7,6 +7,7 @@ import Registration from './pages/Registration';
 import Aboutus from './pages/Aboutus';
 import Loanservices from './pages/Loanservices';
 import Leasingservices from './pages/Leasingservices';
+import Fixeddeposits from './pages/Fixeddeposits';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/loanservices" element={<Loanservices />} />
           <Route path="/leasingservices" element={<Leasingservices />} />
+          <Route path="/fixeddeposits" element={<Fixeddeposits />} />
         </Routes>
       </div>
     </Router>

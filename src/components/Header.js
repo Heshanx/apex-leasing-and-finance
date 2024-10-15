@@ -1,13 +1,20 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Import the useNavigate hook
   
-  // Determine active tab based on current path
   const getActiveTab = (path) => {
     return location.pathname === path ? 'active' : '';
+  };
+
+  const handleContactUsClick = () => {
+    navigate('/aboutus'); // Navigate to the About Us page
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight); // Scroll to the bottom after a short delay
+    }, 100); // Adjust delay if needed
   };
 
   return (
@@ -33,7 +40,7 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item" role="presentation">
-              <Link
+                <Link
                   className={`nav-link ${getActiveTab('/loanservices')}`}
                   id="pills-loanservices-tab"
                   to="/loanservices"
@@ -41,10 +48,9 @@ const Header = () => {
                 >
                   Loan Services
                 </Link>
-                
               </li>
               <li className="nav-item" role="presentation">
-              <Link
+                <Link
                   className={`nav-link ${getActiveTab('/leasingservices')}`}
                   id="pills-leasingservices-tab"
                   to="/leasingservices"
@@ -54,19 +60,14 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${getActiveTab('/fixed-deposits')}`}
-                  id="pills-fixed-deposits-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-fixed-deposits"
-                  type="button"
-                  role="tab"
-                  aria-controls="pills-fixed-deposits"
-                  aria-selected="false"
+                <Link
+                  className={`nav-link ${getActiveTab('/fixeddeposits')}`}
+                  id="pills-fixeddeposits-tab"
+                  to="/fixeddeposits"
                   style={{ color: '#004aad' }}
                 >
                   Fixed Deposits
-                </button>
+                </Link>
               </li>
               <li className="nav-item" role="presentation">
                 <button
@@ -95,14 +96,10 @@ const Header = () => {
               </li>
               <li className="nav-item" role="presentation">
                 <button
-                  className={`nav-link ${getActiveTab('/contactus')}`}
+                  className={`nav-link`}
                   id="pills-contactus-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-contactus"
                   type="button"
-                  role="tab"
-                  aria-controls="pills-contactus"
-                  aria-selected="false"
+                  onClick={handleContactUsClick} // Use the new click handler
                   style={{ color: '#004aad' }}
                 >
                   Contact Us
@@ -116,25 +113,22 @@ const Header = () => {
       {/* Tab content */}
       <div className="tab-content" id="pills-tabContent">
         <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabIndex="0">
-          {/* Home content */}
+
         </div>
         <div className="tab-pane fade" id="pills-loan" role="tabpanel" aria-labelledby="pills-loan-tab" tabIndex="0">
-          {/* Loan Services content */}
+
         </div>
         <div className="tab-pane fade" id="pills-leasing" role="tabpanel" aria-labelledby="pills-leasing-tab" tabIndex="0">
-          {/* Leasing Services content */}
+
         </div>
         <div className="tab-pane fade" id="pills-fixed-deposits" role="tabpanel" aria-labelledby="pills-fixed-deposits-tab" tabIndex="0">
-          {/* Fixed Deposits content */}
+
         </div>
         <div className="tab-pane fade" id="pills-payments" role="tabpanel" aria-labelledby="pills-payments-tab" tabIndex="0">
-          {/* Payments And Billing content */}
+
         </div>
         <div className="tab-pane fade" id="pills-aboutus" role="tabpanel" aria-labelledby="pills-aboutus-tab" tabIndex="0">
-          {/* About Us content */}
-        </div>
-        <div className="tab-pane fade" id="pills-contactus" role="tabpanel" aria-labelledby="pills-contactus-tab" tabIndex="0">
-          {/* Contact Us content */}
+
         </div>
       </div>
     </header>

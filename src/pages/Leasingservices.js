@@ -2,16 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import './Leasingservices.css'; // Ensure the CSS file exists
-import { Accordion } from 'react-bootstrap'; // Make sure to install react-bootstrap
+import './Leasingservices.css';
+import { Accordion } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Leasingservices = () => {
-  const navigate = useNavigate(); // Create a navigate function
+  const navigate = useNavigate();
 
-  // Function to handle Apply Lease button click
   const handleApplyLeaseClick = () => {
-    navigate('/leaseregistration'); // Navigate to the leasing registration page
+    navigate('/leaseregistration');
   };
 
   return (
@@ -62,7 +61,7 @@ const Leasingservices = () => {
           <button
             onClick={handleApplyLeaseClick}
             className="btn btn-primary"
-            style={{ backgroundColor: '#004aad', borderColor: '#004aad' }} // Customize button style
+            style={{ backgroundColor: '#004aad', borderColor: '#004aad' }}
           >
             Apply Lease
           </button>

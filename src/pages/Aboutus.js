@@ -64,35 +64,36 @@ const Aboutus = () => {
     </div>
 
     {/* Our Values Section */}
-    <div className="container mt-5">
-      <h3 className="text-center mb-4">Our Core Values</h3>
-      <div className="row">
-        <div className="col-md-4 mb-4">
-          <div className="card">
-            <div className="card-body" style={{ backgroundColor: '#ffbd59', color: 'black' }}>
-              <h5 className="card-title">Integrity</h5>
-              <p className="card-text">We operate with the highest ethical standards in all our interactions.</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4 mb-4">
-          <div className="card">
-            <div className="card-body" style={{ backgroundColor: '#004aad', color: 'white' }}>
-              <h5 className="card-title">Customer Focus</h5>
-              <p className="card-text">Our clients' satisfaction is at the heart of everything we do.</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4 mb-4">
-          <div className="card">
-            <div className="card-body" style={{ backgroundColor: '#9b9f9f', color: 'black' }}>
-              <h5 className="card-title">Innovation</h5>
-              <p className="card-text">We embrace technology to bring forward-thinking solutions to our clients.</p>
-            </div>
-          </div>
+   <div className="container mt-5">
+  <h3 className="text-center mb-4">Our Core Values</h3>
+  <div className="row">
+    <div className="col-md-4 mb-4">
+      <div className="card rounded">
+        <div className="card-body" style={{ backgroundColor: '#ffbd59', color: 'black', padding: '1rem' }}>
+          <h5 className="card-title">Integrity</h5>
+          <p className="card-text">We operate with the highest ethical standards in all our interactions.</p>
         </div>
       </div>
     </div>
+    <div className="col-md-4 mb-4">
+      <div className="card rounded">
+        <div className="card-body" style={{ backgroundColor: '#004aad', color: 'white', padding: '1rem' }}>
+          <h5 className="card-title">Customer Focus</h5>
+          <p className="card-text">Our clients' satisfaction is at the heart of everything we do.</p>
+        </div>
+      </div>
+    </div>
+    <div className="col-md-4 mb-4">
+      <div className="card rounded">
+        <div className="card-body" style={{ backgroundColor: '#9b9f9f', color: 'black', padding: '1rem' }}>
+          <h5 className="card-title">Innovation</h5>
+          <p className="card-text">We embrace technology to bring forward-thinking solutions to our clients.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       {/* History Section */}
       <div className="container mt-5 mb-5">
