@@ -1,53 +1,278 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Footer from '../components/Footer';
+import './Signup.css';
 
 const Signup = () => {
-  const [custname, setcustname]= useState('');
-  const [userEmail, setuseremail]= useState('');
-  const [userPassword, setuserpassword]= useState('');
+  const [formData, setFormData] = useState({
+    title: '',
+    firstName: '',
+    lastName: '',
+    position: '',
+    company: '',
+    businessArena: '',
+    employees: '',
+    address: '',
+    zip: '',
+    country: '',
+    phone: '',
+    userEmail: '',
+    userPassword: '',
+  });
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
-  const handleSubmit =(event)=>{
-    event.preventDefault();
-  try{
-    axios.post('http://localhost:5000/signup',{
-      cust_name : custname,
-      User_name : userEmail,
-      Password : userPassword,
-    })
-    .then((response) => { 
-      alert(response.data.message);
-      setcustname('');
-      setuseremail('');
-      setuserpassword('');
-    })
-    .catch((error) => { 
-      console.error('There was an Error', error);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-   } catch(Error) {
-      console.error('There was an Error',Error);
+  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!agreeTerms) {
+      alert('You must agree to the terms and conditions.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/signup', {
+        ...formData,
+        User_name: formData.userEmail,
+        Password: formData.userPassword,
+        Phone: formData.phone,
+      });
+      alert(response.data.message);
+
+      setFormData({
+        title: '',
+        firstName: '',
+        lastName: '',
+        position: '',
+        company: '',
+        businessArena: '',
+        employees: '',
+        address: '',
+        zip: '',
+        country: '',
+        phone: '',
+        userEmail: '',
+        userPassword: '',
+      });
+      setAgreeTerms(false);
+    } catch (error) {
+      console.error('There was an error:', error);
+      alert('Signup failed: ' + (error.response ? error.response.data.message : 'Unknown error'));
     }
   };
+
   return (
-    <div className="container mt-5">
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
-          <input type="text" className="form-control" id="name" placeholder="Enter your name" value={custname} onChange={(event)=>setcustname(event.target.value)} required/>
+    <div className="container-fluid my-5">
+  <div className="row">
+  <div className="col-md-4">
+    </div>
+    <div className="col-md-10 mx-auto">
+      <form className="form-detail border p-4 rounded shadow" onSubmit={handleSubmit}>
+        <h2 className="text-center mb-4">Sign Up</h2>
+        
+        <div className="row">
+          {/* General Information */}
+          <div className="col-md-6">
+            <h4>General Information</h4>
+            <div className="form-group mb-3">
+              <label htmlFor="first_name">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                id="first_name"
+                className="form-control fname"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="last_name">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                id="last_name"
+                className="form-control lname"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="position">Position</label>
+              <select
+                name="position"
+                id="position"
+                className="form-control position"
+                value={formData.position}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Position</option>
+                <option value="director">Director</option>
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
+              </select>
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="company">Company</label>
+              <input
+                type="text"
+                name="company"
+                id="company"
+                className="form-control company"
+                placeholder="Company Name"
+                value={formData.company}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="businessArena">Business Arena</label>
+              <input
+                type="text"
+                name="businessArena"
+                id="businessArena"
+                className="form-control businessArena"
+                placeholder="Business Arena"
+                value={formData.businessArena}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="employees">Employees</label>
+              <select
+                name="employees"
+                id="employees"
+                className="form-control employees"
+                value={formData.employees}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Employees</option>
+                <option value="trainee">Trainee</option>
+                <option value="colleague">Colleague</option>
+                <option value="associate">Associate</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Contact Details */}
+          <div className="col-md-6">
+            <h4>Contact Details</h4>
+            <div className="form-group mb-3">
+              <label htmlFor="address">Address</label>
+              <input
+                type="text"
+                name="address"
+                id="address"
+                className="form-control address"
+                placeholder="Address"
+                value={formData.address}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="zip">Zip Code</label>
+              <input
+                type="text"
+                name="zip"
+                id="zip"
+                className="form-control zip"
+                placeholder="Zip Code"
+                value={formData.zip}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="country">Country</label>
+              <select
+                name="country"
+                id="country"
+                className="form-control country"
+                value={formData.country}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Country</option>
+                <option value="Vietnam">Vietnam</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="India">India</option>
+              </select>
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="phone">Phone Number</label>
+              <input
+                type="text"
+                name="phone"
+                id="phone"
+                className="form-control phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group mb-3">
+              <label htmlFor="user_email">Your Email</label>
+              <input
+                type="email"
+                name="userEmail"
+                id="user_email"
+                className="form-control userEmail"
+                placeholder="Your Email"
+                value={formData.userEmail}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Terms and Signup button */}
+            <div className="form-check mb-3">
+              <input
+                type="checkbox"
+                name="agreeTerms"
+                className="form-check-input"
+                id="agreeTerms"
+                checked={agreeTerms}
+                onChange={() => setAgreeTerms(!agreeTerms)}
+                required
+              />
+              <label className="form-check-label" htmlFor="agreeTerms">
+                I do accept the <a href="#" className="text-primary">Terms and Conditions</a> of your site.
+              </label>
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email address</label>
-          <input type="email" className="form-control" id="email" placeholder="Enter your email" value={userEmail} onChange={(event)=>setuseremail(event.target.value)}/>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input type="password" className="form-control" id="password" placeholder="Enter your password" value={userPassword} onChange={(event)=>setuserpassword(event.target.value)}/>
-        </div>
-        <button type="submit" className="btn btn-primary">Signup</button>
       </form>
     </div>
+  </div>
+  <Footer />
+</div>
+
   );
-}
+};
 
 export default Signup;

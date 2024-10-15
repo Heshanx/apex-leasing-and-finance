@@ -68,7 +68,7 @@ const Login = () => {
 
           <button type="submit" className="btn btn-dark btn-block mb-3"style={{ backgroundColor: '#004aad', color: '#fff' }}>Login</button>
           <p className="text-center"><a href="#">Forgot Password?</a></p>
-          <p className="text-center">Don't have an account? <a href="#">Sign Up</a></p>
+          <p className="text-center">Don't have an account? <a href="#" onClick={() => navigate('/Signup')}>Sign Up</a></p>
         </form>
       </div>
     </div>

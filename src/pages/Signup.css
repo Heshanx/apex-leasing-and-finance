@@ -1,0 +1,70 @@
+body {
+    background-color: #ffffff;
+  }
+  
+  .container-fluid {
+    padding: 0 15px;
+  }
+  
+  .form-detail {
+    background-image: url('ApexSignup.jpg');
+    background-size: 1600px;
+    background-position: center;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1; 
+    color: white;
+  }
+  
+  .form-detail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); 
+    z-index: -1;
+  }
+  
+  .btn-primary {
+    background-color: #004aad;
+    width: 50%;
+  }
+  
+  .btn-primary:hover {
+    background-color: #003d99;
+  }
+  
+  h2 {
+    margin-top: 100px;
+    margin-bottom: 20px;
+  }
+  
+  h4 {
+    margin-top: 40px;
+    margin-bottom: 25px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 60%;
+  }
+  
+  /* Adjusting form fields on mobile */
+  @media (max-width: 768px) {
+    .form-detail {
+      padding: 20px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        margin-top: 20px;
+        width: 60%;
+      }
+  }
+  
