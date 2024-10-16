@@ -8,6 +8,7 @@ import Aboutus from './pages/Aboutus';
 import Loanservices from './pages/Loanservices';
 import Leasingservices from './pages/Leasingservices';
 import Fixeddeposits from './pages/Fixeddeposits';
+import Myaccount from './pages/Myaccount';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/loanservices" element={<Loanservices />} />
           <Route path="/leasingservices" element={<Leasingservices />} />
           <Route path="/fixeddeposits" element={<Fixeddeposits />} />
+          <Route path="/myaccount" element={<Myaccount />} />
         </Routes>
       </div>
     </Router>

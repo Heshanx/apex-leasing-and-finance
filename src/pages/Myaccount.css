@@ -1,0 +1,35 @@
+.dashboard-container {
+    padding: 20px;
+}
+
+.row {
+    display: flex; /* Ensure the row is flex */
+}
+
+.left-container, .right-container {
+    /* Optional styles for left and right containers */
+    background-color: #f8f9fa; /* Light background */
+    min-height: 100vh; /* Full height of the viewport */
+}
+
+.center-container {
+    /* Styles for the center container */
+    display: flex;
+    justify-content: center; /* Center align items horizontally */
+}
+
+.card {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: 400px; /* Height of main cards like Savings */
+}
+
+.additional-info-card {
+    height: 196px;
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+.card-titleh3 {
+    margin-top: 40px;
+}

@@ -1,10 +1,12 @@
 .nav-link.active {
     background-color: #004aad;
     color: white !important;
+    border-radius: 20px
   }
 
 .nav-link {
     color: #004aad;
+    margin-left: 10px;
   }
   
   .nav-link.active {
@@ -21,3 +23,8 @@
     color: #003399;
   }
   
+  #pills-login-tab.active {
+    background-color: #ffbd59 !important;
+    color: rgb(0, 0, 0) !important;
+    border-radius: 20px
+  }

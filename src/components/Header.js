@@ -4,17 +4,17 @@ import './Header.css';
 
 const Header = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Import the useNavigate hook
+  const navigate = useNavigate();
   
   const getActiveTab = (path) => {
     return location.pathname === path ? 'active' : '';
   };
 
   const handleContactUsClick = () => {
-    navigate('/aboutus'); // Navigate to the About Us page
+    navigate('/aboutus');
     setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight); // Scroll to the bottom after a short delay
-    }, 100); // Adjust delay if needed
+      window.scrollTo(0, document.body.scrollHeight);
+    }, 100);
   };
 
   return (
@@ -22,7 +22,7 @@ const Header = () => {
       <nav className="navbar navbar-light bg-light">
         <div className="container-fluid">
           {/* Left-aligned brand */}
-          <Link className="navbar-brand" to="/" style={{ color: '#004aad', fontWeight: 'bold' }}>
+          <Link className="navbar-brand" to="/dashboard" style={{ color: '#004aad', fontWeight: 'bold' }}>
             Apex Leasing and Finance
           </Link>
 
@@ -99,11 +99,33 @@ const Header = () => {
                   className={`nav-link`}
                   id="pills-contactus-tab"
                   type="button"
-                  onClick={handleContactUsClick} // Use the new click handler
+                  onClick={handleContactUsClick}
                   style={{ color: '#004aad' }}
                 >
                   Contact Us
                 </button>
+              </li>
+
+              <li className="nav-item" role="presentation">
+                <Link
+                  className="nav-link active"  // Always active
+                  id="pills-login-tab"
+                  to="/"
+                  style={{ backgroundColor: '#ffbd59', color: '#fff' }} // Apply toggled color
+                >
+                  <b>Login</b>
+                </Link>
+              </li>
+
+              <li className="nav-item" role="presentation">
+                <Link
+                  className={`nav-link ${getActiveTab('/myaccount')}`}
+                  id="pills-myaccount-tab"
+                  to="/myaccount"
+                  style={{ color: '#004aad' }}
+                >
+                  My Account
+                </Link>
               </li>
             </ul>
           </div>
