@@ -4,6 +4,8 @@ const cors = require('cors');
 const bodyparser =require('body-parser');
 const axios = require('axios');
 const ratelimiter = require('express-rate-limit');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const secretkey = '6LccvGEqAAAAAL9ykyTySjS4PCOQb5xB9Z0LMDgc';
 
@@ -35,10 +37,11 @@ db.connect((err) => {
         console.log('Connected to MySQL database');
     }
 });
-app.post('/signup',(req,res)=>{
+app.post('/signup',async (req,res)=>{
     const {cust_name,User_name,Password} = req.body;
+    const hashedPassword = await bcrypt.hash(Password, saltRounds);
     const sql ="Insert into signup(cust_name,User_name,Password) Values(?,?,?)";
-    const values = [cust_name,User_name,Password];   
+    const values = [cust_name,User_name,hashedPassword];   
     db.query(sql,values,(err,data)=>{
         if(err){
             return res.status(500).json({ error: err.message });
@@ -46,7 +49,7 @@ app.post('/signup',(req,res)=>{
         res.status(201).json({ message: 'User signed up successfully', data });
     });
 });
-app.post ('/login',limiter,async(req,res)=>{
+app.post ('/login',async(req,res)=>{
     const{User_name,Password,'g-recaptcha-response': captcha} = req.body;
     if(!captcha){
         return res.send('Please Complete the recapcha');
@@ -62,12 +65,18 @@ app.post ('/login',limiter,async(req,res)=>{
             throw new Error('Complete the reCAPCHA');
         }
     const loginsql = 'Select * from signup WHERE User_name=? and Password=?';
-    db.query(loginsql,[User_name,Password],(err,results)=>{
+    db.query(loginsql,[User_name],(err,results)=>{
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) {
             return res.status(400).json({ message: 'Invalid credentials' });
             throw new Error('Invalid Username Or Password ');
         }
+        const storedHashedPassword = results[0].Password;
+        const passwordMatch = bcrypt.compare(Password, storedHashedPassword);
+
+      if (!passwordMatch) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+      }
 
         res.status(200).json({ message: 'Login successful', user: results[0] });
     });
