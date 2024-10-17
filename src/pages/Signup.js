@@ -4,8 +4,10 @@ import Footer from '../components/Footer';
 import './Signup.css';
 import uservelidation from '../validation';
 import { posix } from 'path-browserify';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -56,10 +58,10 @@ const Signup = () => {
         country : formData.country,
         phonenumber: formData.phone,
         useremail: formData.userEmail,
-        userpassword: formData.userPassword,
-      
+        userpassword: formData.userPassword,            
       });
       alert(response.data.message);
+      navigate('/dashboard');
 
       setFormData({
         firstName: '',

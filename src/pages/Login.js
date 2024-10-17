@@ -20,13 +20,15 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/login',{
         useremail: logemail,
         userpassword: logpassword,
-        captcha : captchaValue
+        'g-recaptcha-response': captchaValue,
       });
+      if(response.status === 200){
        alert('login successful')
        navigate('/dashboard');
-      
+      }      
     }catch(error){
       alert('Login failed '+error.response.data.message);
+      console.log('login Faild ',error);
     }
   };
 
@@ -51,11 +53,11 @@ const Login = () => {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" id="email" placeholder="Enter your email" value={logemail} onChange={(event)=>setlogemail(event.target.value)}required />
+            <input type="email" className="form-control" id="email" placeholder="Enter your email" value={logemail} onChange={(event)=>setlogemail(event.target.value)} />
           </div>
           <div className="form-group mb-3">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Enter your password" value={logpassword} onChange={(event)=>setlopassword(event.target.value)} required/>
+            <input type="password" className="form-control" id="password" placeholder="Enter your password" value={logpassword} onChange={(event)=>setlopassword(event.target.value)}/>
           </div>
           <div className="form-group form-check mb-3">
             <input type="checkbox" className="form-check-input" id="rememberMe" />
@@ -63,9 +65,11 @@ const Login = () => {
           </div>   
 
          <div className="form-group form-check mb-3">
-          <ReCAPTCHA 
+         <ReCAPTCHA 
            sitekey='6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0'
-           onChange={(value)=>setCaptchaValue(value)}/>         
+           onChange={(value) => setCaptchaValue(value)}  // Ensure this sets the captcha value correctly
+          />
+     
          </div>
 
           <button type="submit" className="btn btn-dark btn-block mb-3"style={{ backgroundColor: '#004aad', color: '#fff' }}>Login</button>

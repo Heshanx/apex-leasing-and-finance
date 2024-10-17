@@ -17,12 +17,12 @@ export default function uservelidation(formData)
         error.firstName = "Name is not Correct Format. Please Try Again ";
         isValid = false;
     }
-    if(!userEmailregex.test(formData.useremail)){
+    if(!userEmailregex.test(formData.userEmail)){
         error.userEmail = "Please Enter Correct Email Address ";
         isValid = false;
  
     }
-    if(!passwordregex.test(formData.password)){
+    if(!passwordregex.test(formData.userPassword)){
         error.userPassword = "Enter Strong Password";
         isValid = false;
     }
