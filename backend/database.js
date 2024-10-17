@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 
 const saltRound = 10;
-const secretkey = '6LccvGEqAAAAAL9ykyTySjS4PCOQb5xB9Z0LMDgc';
+const secretkey = '6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0';
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000'})); //
@@ -40,7 +40,7 @@ app.post('/signup',async(req,res)=>{
     });
 });
 app.post ('/login',async(req,res)=>{
-    const{User_name,Password,'g-recaptcha-response': captcha} = req.body;
+    const{useremail,userpassword,'g-recaptcha-response': captcha} = req.body;
     if(!captcha){
         return res.send('Please Complete the recapcha');
     }
@@ -53,8 +53,8 @@ app.post ('/login',async(req,res)=>{
         if(!Success){
             return res.response.send('Failed reCAPCHA Verification');
         }
-    const loginsql = 'Select * from signup WHERE User_name=? and Password=?';
-    db.query(loginsql,[User_name,Password],(err,results)=>{
+    const loginsql = 'Select * from signup WHERE useremail=? and userpassword=?';
+    db.query(loginsql,[useremail,userpassword],(err,results)=>{
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(400).json({ message: 'Invalid credentials' });
 

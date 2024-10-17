@@ -18,15 +18,15 @@ const Login = () => {
     }
     try{
       const response = await axios.post('http://localhost:5000/login',{
-        User_name: logemail,
-        Password: logpassword,
+        useremail: logemail,
+        userpassword: logpassword,
         captcha : captchaValue
       });
-      alert('login successful')
-      navigate('/dashboard');
+       alert('login successful')
+       navigate('/dashboard');
+      
     }catch(error){
       alert('Login failed '+error.response.data.message);
-
     }
   };
 
@@ -63,7 +63,9 @@ const Login = () => {
           </div>   
 
          <div className="form-group form-check mb-3">
-          <ReCAPTCHA sitekey='6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0'onChange={(value)=>setCaptchaValue(value)}/>         
+          <ReCAPTCHA 
+           sitekey='6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0'
+           onChange={(value)=>setCaptchaValue(value)}/>         
          </div>
 
           <button type="submit" className="btn btn-dark btn-block mb-3"style={{ backgroundColor: '#004aad', color: '#fff' }}>Login</button>

@@ -1,17 +1,18 @@
+var nameregex = /^[a-zA-Z'-]+(?:\s[a-zA-Z'-]+)*$/;
+var userEmailregex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+var passwordregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/;
+var mobileregex = /^\+?\d{1,3}?\d{10}$/;
+var companyregx = /^[a-zA-Z\s]+$/;
+var addressregx = /^[a-zA-Z0-9\s,.'-]{3,}$/;
+var ziprege = /^\d{5}(-\d{4})?$/; 
+var nic =  /^\+?\d{1,3}?\d{10}$/;
+var wordsonly = /^[a-zA-Z]+$/;
+var numberonly = /^[0-9.]+$/;
+
 export default function uservelidation(formData)
 {
-    var nameregex = /^[a-zA-Z'-]+(?:\s[a-zA-Z'-]+)*$/;
-    var userEmailregex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    var passwordregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,}$/;
-    var mobileregex = /^\+?\d{1,3}?\d{10}$/;
-    var companyregx = /^[a-zA-Z\s]+$/;
-    var addressregx = /^[a-zA-Z0-9\s,.'-]{3,}$/;
-    var ziprege = /^\d{5}(-\d{4})?$/;    
     const error ={};
-
-
     var isValid = true;
-
     if(!nameregex.test(formData.firstName)){
         error.firstName = "Name is not Correct Format. Please Try Again ";
         isValid = false;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import registrationform from '../restvalidation';
 
 function Registration() {
   const [formData, setFormData] = useState({
@@ -21,23 +22,32 @@ function Registration() {
     assets: '',
     currentDebts: '',
     collateral: '',
+    tin : '',
     consent: false
   });
+  const [errors,seterror] = useState({});
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value} = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]:value,
     });
   };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationerror = registrationform(formData) ;
+    seterror(validationerror.error);
+
+    if(validationerror.isValid){
+      console.log('Form submitted:', formData);
+    }
+
     // Send the form data to a server or perform validation here
-    console.log('Form submitted:', formData);
+    
   };
 
   return (
@@ -53,9 +63,9 @@ function Registration() {
             className="form-control"
             name="fullName"
             value={formData.fullName}
-            onChange={handleChange}
-            required
+            onChange={handleChange}           
           />
+          {errors.fullName && <p style={{ color: 'red' }}>{errors.fullName}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Date of Birth</label>
@@ -65,7 +75,7 @@ function Registration() {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
-            required
+       
           />
         </div>
         <div className="mb-3">
@@ -75,7 +85,7 @@ function Registration() {
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-            required
+           
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -91,19 +101,21 @@ function Registration() {
             name="nic"
             value={formData.ssn}
             onChange={handleChange}
-            required
+        
           />
+          {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Taxpayer Identityfication Number (TIN)</label>
           <input
             type="text"
             className="form-control"
-            name="nic"
+            name="tin"
             value={formData.ssn}
             onChange={handleChange}
-            required
+          
           />
+          {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
         </div>
 
         {/* Contact Information */}
@@ -115,9 +127,9 @@ function Registration() {
             className="form-control"
             name="contactNumber"
             value={formData.contactNumber}
-            onChange={handleChange}
-            required
+            onChange={handleChange}          
           />
+           {errors.contactNumber && <p style={{ color: 'red' }}>{errors.contactNumber}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Email Address</label>
@@ -127,8 +139,9 @@ function Registration() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
+          
           />
+          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Residential Address</label>
@@ -138,8 +151,9 @@ function Registration() {
             name="address"
             value={formData.address}
             onChange={handleChange}
-            required
+           
           />
+          {errors.address && <p style={{ color: 'red' }}>{errors.address}</p>}
         </div>
 
         {/* Employment Information */}
@@ -152,8 +166,9 @@ function Registration() {
             name="employmentStatus"
             value={formData.employmentStatus}
             onChange={handleChange}
-            required
+        
           />
+          {errors.employmentStatus && <p style={{ color: 'red' }}>{errors.employmentStatus}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Employer's Name</label>
@@ -163,7 +178,7 @@ function Registration() {
             name="employer"
             value={formData.employer}
             onChange={handleChange}
-            required
+            
           />
         </div>
         <div className="mb-3">
@@ -174,7 +189,7 @@ function Registration() {
             name="jobTitle"
             value={formData.jobTitle}
             onChange={handleChange}
-            required
+           
           />
         </div>
         <div className="mb-3">
@@ -185,8 +200,9 @@ function Registration() {
             name="monthlyIncome"
             value={formData.monthlyIncome}
             onChange={handleChange}
-            required
+          
           />
+          {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Other Sources of Income</label>
@@ -197,6 +213,7 @@ function Registration() {
             value={formData.otherIncome}
             onChange={handleChange}
           />
+          {errors.otherIncome && <p style={{ color: 'red' }}>{errors.otherIncome}</p>}
         </div>
 
         {/* Loan Information */}
@@ -209,8 +226,9 @@ function Registration() {
             name="loanAmount"
             value={formData.loanAmount}
             onChange={handleChange}
-            required
+          
           />
+          {errors.loanAmount && <p style={{ color: 'red' }}>{errors.loanAmount}</p>}
         </div>
         <div className="mb-3">
           <label className="form-label">Loan Purpose</label>
@@ -220,7 +238,7 @@ function Registration() {
             name="loanPurpose"
             value={formData.loanPurpose}
             onChange={handleChange}
-            required
+         
           />
         </div>
         <div className="mb-3">
@@ -231,8 +249,9 @@ function Registration() {
             name="loanTerm"
             value={formData.loanTerm}
             onChange={handleChange}
-            required
+       
           />
+          {errors.loanTerm && <p style={{ color: 'red' }}>{errors.loanTerm}</p>}
         </div>
 
         {/* Financial Information */}
