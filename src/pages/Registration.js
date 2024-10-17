@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import registrationform from '../restvalidation';
+import axios from 'axios';
 
 function Registration() {
   const [formData, setFormData] = useState({
@@ -37,17 +38,29 @@ function Registration() {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const validationerror = registrationform(formData) ;
     seterror(validationerror.error);
 
     if(validationerror.isValid){
-      console.log('Form submitted:', formData);
-    }
+      try{
+        const response = await axios.post('http://localhost:3000/registration',{
+          ...formData,
+          nic : formData.nic,
+          fullName : formData.fullName,
+          contactNumber : formData.contactNumber,
+          address : formData.address,
+          monthlyIncome: formData.monthlyIncome,
+          loanAmount : formData.loanAmount,
+          loanTerm : formData.loanTerm
+        });
 
-    // Send the form data to a server or perform validation here
-    
+      }catch(error){
+        console.log(error);
+        alert('Submit Faild '+ error.response.data.message);
+      }
+    }    // Send the form data to a server or perform validation here    
   };
 
   return (

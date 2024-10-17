@@ -66,6 +66,21 @@ app.post ('/login',async(req,res)=>{
 }
 
 });
+
+app.post('/registration',async(req,res)=>{
+    const {nic,fullName,contactNumber,address,monthlyIncome,loanAmount}=req.body
+    const appro = 'Pending';
+    const sqlre = "INSERT INTO loan_registration(NIC,full_name,Tp_number,Apply_address,month_income,loan_amount,loan_term,approval_status) VALUES(?,?,?,?,?,?,?,?)";
+    const Values =[nic,fullName,contactNumber,address,monthlyIncome,loanAmount,loanTerm,appro];
+    db.query(sqlre,Values,(err,data)=>{
+        if(err){
+            return res.status(500).json({ error: err.message });
+        } 
+        res.status(201).json({ message: 'You Application Submited And Approval pending', data });
+    });
+});
+
+
 app.listen(5000,()=>{
     console.log("Listning....");
 });
