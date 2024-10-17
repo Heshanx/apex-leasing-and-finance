@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import './Signup.css';
+import uservelidation from '../validation';
+import { posix } from 'path-browserify';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    title: '',
     firstName: '',
     lastName: '',
     position: '',
@@ -20,6 +21,7 @@ const Signup = () => {
     userPassword: '',
   });
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [errors,seterror] = useState({});
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -31,6 +33,10 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const validateerror = uservelidation(formData)
+    seterror(validateerror.error);
+    if(validateerror.isValid){
+
     if (!agreeTerms) {
       alert('You must agree to the terms and conditions.');
       return;
@@ -39,14 +45,23 @@ const Signup = () => {
     try {
       const response = await axios.post('http://localhost:5000/signup', {
         ...formData,
-        User_name: formData.userEmail,
-        Password: formData.userPassword,
-        Phone: formData.phone,
+        firstname:formData.firstName,
+        lastname : formData.lastName,
+        position : formData.position,
+        company : formData.company,
+        businessArea : formData.businessArena,
+        Employeement :formData.employees,
+        address :formData.address,
+        zipcode : formData.zip,
+        country : formData.country,
+        phonenumber: formData.phone,
+        useremail: formData.userEmail,
+        userpassword: formData.userPassword,
+      
       });
       alert(response.data.message);
 
       setFormData({
-        title: '',
         firstName: '',
         lastName: '',
         position: '',
@@ -59,12 +74,14 @@ const Signup = () => {
         phone: '',
         userEmail: '',
         userPassword: '',
+
       });
       setAgreeTerms(false);
     } catch (error) {
       console.error('There was an error:', error);
       alert('Signup failed: ' + (error.response ? error.response.data.message : 'Unknown error'));
     }
+  } 
   };
 
   return (
@@ -89,9 +106,9 @@ const Signup = () => {
                 className="form-control fname"
                 placeholder="First Name"
                 value={formData.firstName}
-                onChange={handleChange}
-                required
+                onChange={handleChange}               
               />
+              {errors.firstName && <p style={{ color: 'red' }}>{errors.firstName}</p>}
             </div>
 
             <div className="form-group mb-3">
@@ -103,9 +120,9 @@ const Signup = () => {
                 className="form-control lname"
                 placeholder="Last Name"
                 value={formData.lastName}
-                onChange={handleChange}
-                required
-              />
+                onChange={handleChange}  
+                required              
+              />              
             </div>
 
             <div className="form-group mb-3">
@@ -134,9 +151,9 @@ const Signup = () => {
                 className="form-control company"
                 placeholder="Company Name"
                 value={formData.company}
-                onChange={handleChange}
-                required
+                onChange={handleChange}               
               />
+             {errors.company && <p style={{ color: 'red' }}>{errors.company}</p>}
             </div>
 
             <div className="form-group mb-3">
@@ -149,7 +166,7 @@ const Signup = () => {
                 placeholder="Business Arena"
                 value={formData.businessArena}
                 onChange={handleChange}
-                required
+                required             
               />
             </div>
 
@@ -161,7 +178,7 @@ const Signup = () => {
                 className="form-control employees"
                 value={formData.employees}
                 onChange={handleChange}
-                required
+                required               
               >
                 <option value="">Select Employees</option>
                 <option value="trainee">Trainee</option>
@@ -183,9 +200,9 @@ const Signup = () => {
                 className="form-control address"
                 placeholder="Address"
                 value={formData.address}
-                onChange={handleChange}
-                required
+                onChange={handleChange}               
               />
+              {errors.address && <p style={{ color: 'red' }}>{errors.address}</p>}
             </div>
 
             <div className="form-group mb-3">
@@ -198,8 +215,8 @@ const Signup = () => {
                 placeholder="Zip Code"
                 value={formData.zip}
                 onChange={handleChange}
-                required
               />
+             {errors.zip && <p style={{ color: 'red' }}>{errors.zip}</p>}
             </div>
 
             <div className="form-group mb-3">
@@ -210,7 +227,7 @@ const Signup = () => {
                 className="form-control country"
                 value={formData.country}
                 onChange={handleChange}
-                required
+                required        
               >
                 <option value="">Select Country</option>
                 <option value="Vietnam">Vietnam</option>
@@ -228,9 +245,9 @@ const Signup = () => {
                 className="form-control phone"
                 placeholder="Phone Number"
                 value={formData.phone}
-                onChange={handleChange}
-                required
+                onChange={handleChange}                
               />
+              {errors.phone && <p style={{ color: 'red' }}>{errors.phone}</p>}
             </div>
 
             <div className="form-group mb-3">
@@ -242,10 +259,24 @@ const Signup = () => {
                 className="form-control userEmail"
                 placeholder="Your Email"
                 value={formData.userEmail}
-                onChange={handleChange}
-                required
+                onChange={handleChange}             
               />
+              {errors.userEmail && <p style={{ color: 'red' }}>{errors.userEmail}</p>}
             </div>
+            <div className="form-group mb-3">
+              <label htmlFor="userpassword">Your Password</label>
+              <input
+                type="password"
+                name="userPassword"
+                id="userpassword"
+                className="form-control userpassowrd"
+                placeholder="Your Password"
+                value={formData.userPassword}
+                onChange={handleChange}             
+              />
+              {errors.userPassword && <p style={{ color: 'red' }}>{errors.userPassword}</p>}
+            </div>
+
 
             {/* Terms and Signup button */}
             <div className="form-check mb-3">
@@ -276,3 +307,4 @@ const Signup = () => {
 };
 
 export default Signup;
+

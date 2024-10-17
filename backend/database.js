@@ -3,7 +3,10 @@ const mysql = require('mysql');
 const cors = require('cors');
 const bodyparser =require('body-parser');
 const axios = require('axios');
+const bcrypt = require('bcrypt');
 
+
+const saltRound = 10;
 const secretkey = '6LccvGEqAAAAAL9ykyTySjS4PCOQb5xB9Z0LMDgc';
 
 const app = express();
@@ -13,8 +16,8 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 const db = mysql.createConnection({
     host :'127.0.0.1',
-    user :'root',
-    password : '',
+    user :'Apex',
+    password : 'Apexuser12345@',
     database : 'signup'
 });
 db.connect((err) => {
@@ -24,10 +27,11 @@ db.connect((err) => {
         console.log('Connected to MySQL database');
     }
 });
-app.post('/signup',(req,res)=>{
-    const {cust_name,User_name,Password} = req.body;
-    const sql ="Insert into signup(cust_name,User_name,Password) Values(?,?,?)";
-    const values = [cust_name,User_name,Password];   
+app.post('/signup',async(req,res)=>{
+    const {firstname,lastname,position,company,businessArea,Employeement,address,zipcode,country,phonenumber,useremail,userpassword} = req.body;
+    const heshpassword = await bcrypt.hash(userpassword,saltRound);
+    const sql ="Insert into signup(firstname,lastname,position,comapny,businessArea,Employeement,address,zipcode,country,phonenumber,useremail,userpassword	) Values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    const values = [firstname,lastname,position,company,businessArea,Employeement,address,zipcode,country,phonenumber,useremail,heshpassword];   
     db.query(sql,values,(err,data)=>{
         if(err){
             return res.status(500).json({ error: err.message });
