@@ -64,13 +64,13 @@ app.post ('/login',async(req,res)=>{
     if (err) return res.status(500).json('Error During reCAPCHA Verification ');
     console.error('Error During reCAPCHA Verification ',error);
 }
-
 });
 
 app.post('/registration',async(req,res)=>{
-    const {nic,fullName,contactNumber,address,monthlyIncome,loanAmount}=req.body
+    try{
+    const {nic,fullName,contactNumber,address,monthlyIncome,loanAmount,loanTerm}=req.body
     const appro = 'Pending';
-    const sqlre = "INSERT INTO loan_registration(NIC,full_name,Tp_number,Apply_address,month_income,loan_amount,loan_term,approval_status) VALUES(?,?,?,?,?,?,?,?)";
+    const sqlre = "INSERT INTO loanreg (NIC,full_name,Tp_number,address,monthincome,loanAmont,trem,status) VALUES(?,?,?,?,?,?,?,?)";
     const Values =[nic,fullName,contactNumber,address,monthlyIncome,loanAmount,loanTerm,appro];
     db.query(sqlre,Values,(err,data)=>{
         if(err){
@@ -78,6 +78,9 @@ app.post('/registration',async(req,res)=>{
         } 
         res.status(201).json({ message: 'You Application Submited And Approval pending', data });
     });
+}catch(error){
+    console.log(error);
+}
 });
 
 

@@ -42,26 +42,20 @@ function Registration() {
     e.preventDefault();
     const validationerror = registrationform(formData) ;
     seterror(validationerror.error);
-
-    if(validationerror.isValid){
-      try{
-        const response = await axios.post('http://localhost:3000/registration',{
-          ...formData,
-          nic : formData.nic,
-          fullName : formData.fullName,
-          contactNumber : formData.contactNumber,
-          address : formData.address,
-          monthlyIncome: formData.monthlyIncome,
-          loanAmount : formData.loanAmount,
-          loanTerm : formData.loanTerm
-        });
-
-      }catch(error){
-        console.log(error);
-        alert('Submit Faild '+ error.response.data.message);
-      }
-    }    // Send the form data to a server or perform validation here    
+    if(validationerror.error){
+    const response = await axios.post('http://localhost:5000/registration',{
+      ...formData,
+      nic : formData.nic,
+      fullName : formData.fullName,
+      contactNumber : formData.contactNumber,
+      address : formData.address,
+      monthlyIncome: formData.monthlyIncome,
+      loanAmount : formData.loanAmount,
+      loanTerm : formData.loanTerm,
+      });
+    }
   };
+
 
   return (
     <div className="container mt-5">
