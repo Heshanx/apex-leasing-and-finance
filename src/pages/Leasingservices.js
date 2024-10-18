@@ -10,7 +10,7 @@ const Leasingservices = () => {
   const navigate = useNavigate();
 
   const handleApplyLeaseClick = () => {
-    navigate('/leaseregistration');
+    navigate('/leaseRegistration');
   };
 
   return (

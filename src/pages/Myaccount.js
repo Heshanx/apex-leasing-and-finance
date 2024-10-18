@@ -14,7 +14,7 @@ const Myaccount = () => {
 
   const requestStatus = [
     { type: 'Fixed Deposit', status: 'Approved', date: '10/12/2023' },
-    { type: 'Leasing', status: 'Pending', date: '15/12/2023' },
+    { type: 'Leasing', status: 'Pending', date: '15/01/2024' },
     { type: 'Loan', status: 'Rejected', date: '08/12/2023' }
   ];
 

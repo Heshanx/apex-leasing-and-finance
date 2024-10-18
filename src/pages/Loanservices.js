@@ -94,7 +94,7 @@ const Loanservices = () => {
         <button
             onClick={handleApplyLoanClick}
             className="btn btn-primary"
-            style={{ backgroundColor: '#004aad', borderColor: '#004aad' }} // Customize button style
+            style={{ backgroundColor: '#004aad', borderColor: '#004aad' }}
           >
             Apply Loan
           </button>
