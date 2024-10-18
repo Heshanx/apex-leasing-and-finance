@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LeaseRegistration.css';
+import './FDregistration.css';
 
-const LeaseRegistration = () => {
+const FDRegistration = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,58 +13,50 @@ const LeaseRegistration = () => {
     country: '',
     phoneNumber: '',
     emailAddress: '',
-    leaseAmount: '',
-    leaseTerm: '',
-    downPayment: '',
+    accountNumber: '',
+    depositAmount: '',
+    depositTenure: '',
     interestRate: '',
-    monthlyRental: ''
+    interestAmount: '',
+    paymentMode: ''
   });
 
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); 
 
-  const calculateMonthlyRental = (amount, downPayment, term) => {
+
+  const calculateInterestRate = (tenure, amount) => {
     let rate = 0;
-  
-    if (term === 12) {
-      rate = 15;
-    } else if (term === 24) {
-      rate = 16.5;
-    } else if (term === 36) {
-      rate = 18;
-    }
-  
-    const principal = amount - downPayment;
-    const monthlyInterest = (rate / 100) / 12;
-    const monthlyRental = (principal * monthlyInterest) / (1 - Math.pow(1 + monthlyInterest, -term));
-    
 
-    return {
-      monthlyRental: monthlyRental.toFixed(2),
-      interestRate: rate
-    };
+    if (tenure === '3 Months') {
+      rate = 4;
+    } else if (tenure === '6 Months') {
+      rate = 4.5;
+    } else if (tenure === '1 Year') {
+      rate = 5;
+    }
+
+    const interestAmount = (amount * rate * (parseInt(tenure) / 12)) / 100;
+
+    return { rate, interestAmount };
   };
-  
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const updatedData = { ...formData, [name]: value };
-  
+    let updatedData = { ...formData, [name]: value };
 
-    if (name === 'leaseAmount' || name === 'downPayment' || name === 'leaseTerm') {
-      const { leaseAmount, downPayment, leaseTerm } = updatedData;
-      const term = parseInt(leaseTerm, 10);
-      
-      if (leaseAmount && downPayment && term) {
-        const { monthlyRental, interestRate } = calculateMonthlyRental(leaseAmount, downPayment, term);
-        updatedData.monthlyRental = monthlyRental;
-        updatedData.interestRate = interestRate;
+    if (name === 'depositTenure' || name === 'depositAmount') {
+      const { depositTenure, depositAmount } = updatedData;
+      if (depositTenure && depositAmount) {
+        const { rate, interestAmount } = calculateInterestRate(depositTenure, depositAmount);
+        updatedData.interestRate = rate;
+        updatedData.interestAmount = interestAmount.toFixed(2);
       }
     }
-  
+
     setFormData(updatedData);
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,33 +65,13 @@ const LeaseRegistration = () => {
     let formErrors = {};
     let valid = true;
 
-    // Validate Personal Info
-    const requiredFields = ['firstName', 'lastName', 'dateOfBirth', 'nationalID', 'address', 'city', 'country', 'phoneNumber', 'emailAddress'];
-    requiredFields.forEach((key) => {
-      if (!formData[key]) {
-        formErrors[key] = `${key.replace(/([A-Z])/g, ' $1')} is required`;
+    // Validation
+    Object.keys(formData).forEach(key => {
+      if (!formData[key] && key !== 'interestRate' && key !== 'interestAmount') {
+        formErrors[key] = `${key} is required`;
         valid = false;
       }
     });
-
-    // Validate Lease Info
-    if (!formData.leaseAmount) {
-      formErrors.leaseAmount = 'Lease Amount is required';
-      valid = false;
-    }
-
-    if (!formData.leaseTerm) {
-      formErrors.leaseTerm = 'Lease Term is required';
-      valid = false;
-    }
-
-    if (!formData.downPayment) {
-      formErrors.downPayment = 'Down Payment is required';
-      valid = false;
-    } else if (parseFloat(formData.downPayment) >= parseFloat(formData.leaseAmount)) {
-      formErrors.downPayment = 'Down payment must be less than lease amount.';
-      valid = false;
-    }
 
     if (!agreeTerms) {
       formErrors.agreeTerms = 'You must agree to the terms and conditions.';
@@ -112,7 +84,7 @@ const LeaseRegistration = () => {
     if (!valid) return;
 
     try {
-      const response = await axios.post('http://localhost:5000/lease-registration', formData);
+      const response = await axios.post('http://localhost:5000/fd-registration', formData);
       alert(response.data.message);
       // Clear form
       setFormData({
@@ -125,11 +97,12 @@ const LeaseRegistration = () => {
         country: '',
         phoneNumber: '',
         emailAddress: '',
-        leaseAmount: '',
-        leaseTerm: '',
-        downPayment: '',
+        accountNumber: '',
+        depositAmount: '',
+        depositTenure: '',
         interestRate: '',
-        monthlyRental: ''
+        interestAmount: '',
+        paymentMode: ''
       });
       setAgreeTerms(false);
     } catch (error) {
@@ -142,8 +115,8 @@ const LeaseRegistration = () => {
     <div className="container-fluid my-5">
       <div className="row">
         <div className="col-md-10 mx-auto">
-          <form className="lease-registration-container border p-4 rounded shadow" onSubmit={handleSubmit} noValidate validated={isValid}>
-            <h2 className="text-center mb-4">Lease Registration</h2>
+          <form className="form-fdreg border p-4 rounded shadow" onSubmit={handleSubmit} noValidate validated={isValid}>
+            <h2 className="text-center mb-4">Fixed Deposit Registration</h2>
 
             <div className="row">
               {/* Personal Information */}
@@ -193,7 +166,7 @@ const LeaseRegistration = () => {
 
                 {errors.nationalID && <div className="text-danger">{errors.nationalID}</div>}
                 <div className="form-group mb-3">
-                  <label htmlFor="nationalID">National ID</label>
+                  <label htmlFor="nationalID">National Identity Number</label>
                   <input
                     type="text"
                     name="nationalID"
@@ -246,127 +219,128 @@ const LeaseRegistration = () => {
                   >
                     <option value="">Select Country</option>
                     <option value="Sri Lanka">Sri Lanka</option>
-                    {/* Add more countries here */}
+                    
                   </select>
-                </div>
-
-                {errors.phoneNumber && <div className="text-danger">{errors.phoneNumber}</div>}
-                <div className="form-group mb-3">
-                  <label htmlFor="phoneNumber">Phone Number</label>
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    id="phoneNumber"
-                    className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''}`}
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                {errors.emailAddress && <div className="text-danger">{errors.emailAddress}</div>}
-                <div className="form-group mb-3">
-                  <label htmlFor="emailAddress">Email Address</label>
-                  <input
-                    type="email"
-                    name="emailAddress"
-                    id="emailAddress"
-                    className={`form-control ${errors.emailAddress ? 'is-invalid' : ''}`}
-                    value={formData.emailAddress}
-                    onChange={handleChange}
-                    required
-                  />
                 </div>
               </div>
 
-              {/* Lease Information */}
+              {/* Deposit Details */}
               <div className="col-md-6">
-                <h4>Lease Information</h4>
-                {errors.leaseAmount && <div className="text-danger">{errors.leaseAmount}</div>}
+                <h4>Deposit Details</h4>
+
+                {errors.accountNumber && <div className="text-danger">{errors.accountNumber}</div>}
                 <div className="form-group mb-3">
-                  <label htmlFor="leaseAmount">Lease Amount</label>
+                  <label htmlFor="accountNumber"style={{ fontWeight: 'bold'}}>Account Number</label>
                   <input
-                    type="number"
-                    name="leaseAmount"
-                    id="leaseAmount"
-                    className={`form-control ${errors.leaseAmount ? 'is-invalid' : ''}`}
-                    value={formData.leaseAmount}
+                    type="text"
+                    name="accountNumber"
+                    id="accountNumber"
+                    className={`form-control ${errors.accountNumber ? 'is-invalid' : ''}`}
+                    value={formData.accountNumber}
                     onChange={handleChange}
                     required
                   />
                 </div>
 
-                {errors.leaseTerm && <div className="text-danger">{errors.leaseTerm}</div>}
+                {errors.depositAmount && <div className="text-danger">{errors.depositAmount}</div>}
                 <div className="form-group mb-3">
-                  <label htmlFor="leaseTerm">Lease Term (months)</label>
+                  <label htmlFor="depositAmount"style={{ fontWeight: 'bold'}}>Deposit Amount</label>
+                  <input
+                    type="number"
+                    name="depositAmount"
+                    id="depositAmount"
+                    className={`form-control ${errors.depositAmount ? 'is-invalid' : ''}`}
+                    value={formData.depositAmount}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                {errors.depositTenure && <div className="text-danger">{errors.depositTenure}</div>}
+                <div className="form-group mb-3">
+                  <label htmlFor="depositTenure" style={{ fontWeight: 'bold'}}>Deposit Tenure</label>
                   <select
-                    name="leaseTerm"
-                    id="leaseTerm"
-                    className={`form-control ${errors.leaseTerm ? 'is-invalid' : ''}`}
-                    value={formData.leaseTerm}
+                    name="depositTenure"
+                    id="depositTenure"
+                    className={`form-control ${errors.depositTenure ? 'is-invalid' : ''}`}
+                    value={formData.depositTenure}
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select Lease Term</option>
-                    <option value="12">12 months</option>
-                    <option value="24">24 months</option>
-                    <option value="36">36 months</option>
+                    <option value="">Select Tenure</option>
+                    <option value="3 Months">3 Months</option>
+                    <option value="6 Months">6 Months</option>
+                    <option value="1 Year">1 Year</option>
                   </select>
                 </div>
 
-                {errors.downPayment && <div className="text-danger">{errors.downPayment}</div>}
                 <div className="form-group mb-3">
-                  <label htmlFor="downPayment">Down Payment</label>
+                  <label htmlFor="interestRate" style={{ fontWeight: 'bold', color: '#004aad' }}>Interest Rate (%)</label>
                   <input
-                    type="number"
-                    name="downPayment"
-                    id="downPayment"
-                    className={`form-control ${errors.downPayment ? 'is-invalid' : ''}`}
-                    value={formData.downPayment}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group mb-3">
-                  <label htmlFor="interestRate">Interest Rate (%)</label>
-                  <input
-                    type="number"
+                    type="text"
                     name="interestRate"
                     id="interestRate"
                     className="form-control"
-                    value={formData.interestRate} // Display interest rate if needed
+                    style={{ fontWeight: 'bold', color: '#004aad' }}
+                    value={formData.interestRate}
                     readOnly
                   />
                 </div>
 
                 <div className="form-group mb-3">
-                  <label htmlFor="monthlyRental">Monthly Rental (LKR)</label>
+                  <label htmlFor="interestAmount" style={{ fontWeight: 'bold', color: '#004aad' }}>Total Interest Amount</label>
                   <input
                     type="text"
-                    name="monthlyRental"
-                    id="monthlyRental"
+                    name="interestAmount"
+                    id="interestAmount"
                     className="form-control"
-                    value={formData.monthlyRental}
+                    style={{ fontWeight: 'bold', color: '#004aad' }}
+                    value={formData.interestAmount}
                     readOnly
                   />
                 </div>
 
-                <div className="form-check mb-3">
-                  <input
-                    type="checkbox"
-                    name="agreeTerms"
-                    id="agreeTerms"
-                    className={`form-check-input ${errors.agreeTerms ? 'is-invalid' : ''}`}
-                    checked={agreeTerms}
-                    onChange={(e) => setAgreeTerms(e.target.checked)}
+                {errors.paymentMode && <div className="text-danger">{errors.paymentMode}</div>}
+                <div className="form-group mb-3">
+                  <label htmlFor="paymentMode"style={{ fontWeight: 'bold'}}>Interest Payment Mode</label>
+                  <select
+                    name="paymentMode"
+                    id="paymentMode"
+                    className={`form-control ${errors.paymentMode ? 'is-invalid' : ''}`}
+                    value={formData.paymentMode}
+                    onChange={handleChange}
                     required
-                  />
-                  <label htmlFor="agreeTerms" className="form-check-label">I agree to the terms and conditions.</label>
-                  {errors.agreeTerms && <div className="text-danger">{errors.agreeTerms}</div>}
+                  >
+                    <option value="">Select Payment Mode</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Quarterly">Quarterly</option>
+                    <option value="Annually">Annually</option>
+                  </select>
                 </div>
+                 
+                <div className="form-group mb-3">
+                <input
+                  type="checkbox"
+                  name="agreeTerms"
+                  id="agreeTerms"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                />
+                <label htmlFor="agreeTerms" className="ms-2">
+                  I agree to the <a href="/terms">terms and conditions</a>.
+                </label>
+              </div>
+                {errors.agreeTerms && <div className="text-danger">{errors.agreeTerms}</div>}
+                <button type="submit" className="btn btn-primary position-center" >
+                  Submit
+                </button>
+              </div>
 
-                <button type="submit" className="btn btn-primary">Submit</button>
+              {/* Terms Agreement */}
+              
+
+              <div className="form-group mb-3 text-center">
+                
               </div>
             </div>
           </form>
@@ -376,4 +350,4 @@ const LeaseRegistration = () => {
   );
 };
 
-export default LeaseRegistration;
+export default FDRegistration;

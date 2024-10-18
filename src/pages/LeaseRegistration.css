@@ -3,7 +3,7 @@
     background-size: 2600px;
     background-position: center;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 30px;
     position: relative;
     z-index: 1; 
     color: rgb(0, 0, 0);
@@ -16,7 +16,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.4); 
+    background-color: rgba(255, 255, 255, 0.8); 
     z-index: -1;
   }
   
