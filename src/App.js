@@ -10,6 +10,7 @@ import Leasingservices from './pages/Leasingservices';
 import Fixeddeposits from './pages/Fixeddeposits';
 import Myaccount from './pages/Myaccount';
 import LeaseRegistration from './pages/LeaseRegistration';
+import FDregistration from './pages/FDregistration';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/Registration" element={<Registration/>}/>
           <Route path="/leaseRegistration" element={<LeaseRegistration />} />
+          <Route path="/fdregistration" element={<FDregistration />} />
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/loanservices" element={<Loanservices />} />
           <Route path="/leasingservices" element={<Leasingservices />} />
