@@ -27,8 +27,16 @@ const Login = () => {
        navigate('/dashboard');
       }      
     }catch(error){
-      alert('Login failed '+error.response.data.message);
-      console.log('login Faild ',error);
+      if (error.response) {
+        // Check if 'data' exists before accessing it
+        const errorMessage = error.response.data?.message || 'Login failed';
+        alert(`Login failed: ${errorMessage}`);
+        console.log('Login failed', error.response);
+      } else {
+        // Handle errors without a response object (e.g., network issues)
+        console.error('Error:', error.message);
+        alert('An error occurred during login. Please try again.');
+      }
     }
   };
 

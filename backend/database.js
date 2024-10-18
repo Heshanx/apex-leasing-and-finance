@@ -38,47 +38,58 @@ app.post('/signup',async(req,res)=>{
     });
 });
 
-const secretkey = '6LccvGEqAAAAAKNkyQRE2TgbfHkOFe-zry1cRJZ0';
+const secretkey = '6LccvGEqAAAAAL9ykyTySjS4PCOQb5xB9Z0LMDgc';
+
+
 app.post('/login', async (req, res) => {
-    const { useremail, userpassword, 'g-recaptcha-response': captcha } = req.body;
-    const verifyurl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretkey}&response=${captcha}`;
-
-    if (!captcha) {
-        return res.send('Please complete the reCAPTCHA');
+    const { useremail, userpassword, 'g-recaptcha-response': captchaValue } = req.body;
+    const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretkey}&response=${captchaValue}`;
+    
+    if (!captchaValue) {
+        console.error('reCAPTCHA Error');
+        return res.status(400).json({ message: 'Please complete reCAPTCHA' });
     }
-    try {
-        const response = await axios.post(verifyurl);
-        console.log(response);
-        const { success } = response.data;
 
+    try {
+        const response = await axios.post(verifyUrl);
+        console.log('reCAPTCHA response:', response.data);
+
+        const { success } = response.data;
+        
         if (!success) {
-            return res.send('Failed reCAPTCHA Verification');
+            console.error('reCAPTCHA Verification Failed');
+            return res.status(400).json({ message: 'reCAPTCHA Verification Failed' });
         }
 
-        const loginsql = 'SELECT * FROM signup WHERE useremail = ?';
-        db.query(loginsql, [useremail], async (err, results) => {
+        const loginsql = 'SELECT * from signup WHERE useremail = ?';
+
+        db.query(loginsql, [useremail], async (err, result) => {
             if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            if (results.length === 0) {
-                return res.status(400).json({ message: 'Invalid Email or Password' });
+                console.error('Database error:', err);
+                return res.status(500).json({ message: 'Database error', error: err.message });
             }
 
-            const user = results[0];
-            const isPasswordMatch = await bcrypt.compare(userpassword, user.userpassword);
-
-            if (!isPasswordMatch) {
+            if (result.length === 0) {
+                console.error('No user found for this email');
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
-            res.status(200).json({ message: 'Login successful', user });
-        });
+            const heshpassword = await bcrypt.hash(userpassword, saltRound);
+            const isPasswordMatch = await bcrypt.compare(userpassword, heshpassword);
 
+            if (!isPasswordMatch) {
+                console.error('Invalid password');
+                return res.status(400).json({ message: 'Invalid  password' });
+            }
+
+            res.status(200).json({ message: 'LOGIN SUCCESSFUL' });
+        });
     } catch (error) {
-        console.error('Error during reCAPTCHA verification', error);
-        return res.status(500).json('Error during reCAPTCHA Verification');
+        console.error('Error during login:', error);
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
+
 
 app.post('/registration',async(req,res)=>{
     try{
@@ -96,8 +107,6 @@ app.post('/registration',async(req,res)=>{
     console.log(error);
 }
 });
-
-
 app.listen(5000,()=>{
     console.log("Listning....");
 });
