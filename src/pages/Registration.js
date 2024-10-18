@@ -1,6 +1,7 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import registrationform from '../restvalidation';
+import './Registration.css';
 import axios from 'axios';
 
 function Registration() {
@@ -12,32 +13,67 @@ function Registration() {
     contactNumber: '',
     email: '',
     address: '',
-    employmentStatus: '',
-    employer: '',
-    jobTitle: '',
-    monthlyIncome: '',
-    otherIncome: '',
+    accountNumber: '',
     loanAmount: '',
-    loanPurpose: '',
+    monthlyIncome: '',
     loanTerm: '',
-    assets: '',
-    currentDebts: '',
-    collateral: '',
+    interestRate: '',
+    monthlyInterestAmount: '',
     tin: '',
     consent: false
   });
   const [errors, seterror] = useState({});
 
-  // Handle input changes
+  // loan calculation
+  useEffect(() => {
+    const { loanAmount, loanTerm, interestRate } = formData;
+    if (loanAmount && loanTerm && interestRate) {
+      const monthlyInterest = (loanAmount * (interestRate / 100) / 12 + loanAmount/(12*loanTerm)).toFixed(2);
+      setFormData((prevData) => ({
+        ...prevData,
+        monthlyInterestAmount: monthlyInterest,
+      }));
+    }
+  }, [formData.loanAmount, formData.loanTerm, formData.interestRate]);
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+    
+    //interest rates
+    if (name === 'loanTerm') {
+      let rate;
+      switch (value) {
+        case '1':
+          rate = 12;
+          break;
+        case '2':
+          rate = 10;
+          break;
+        case '3':
+          rate = 9;
+          break;
+        case '4':
+          rate = 8;
+          break;
+        case '5':
+          rate = 7;
+          break;
+        default:
+          rate = '';
+      }
+      setFormData((prevData) => ({
+        ...prevData,
+        interestRate: rate,
+      }));
+    }
   };
 
-  // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationerror = registrationform(formData);
@@ -62,9 +98,9 @@ function Registration() {
   };
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4">Registration Form</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="container mt-5 ">
+      <h1 className="mb-4 ">Registration Form</h1>
+      <form className='form-reg ' onSubmit={handleSubmit}>
         {/* Personal Information */}
         <h4>Personal Information</h4>
         <div className="row mb-3">
@@ -97,6 +133,7 @@ function Registration() {
           <select
             className="form-select"
             name="gender"
+            style={{width:'47%'}}
             value={formData.gender}
             onChange={handleChange}
             required
@@ -175,74 +212,24 @@ function Registration() {
           {errors.address && <p style={{ color: 'red' }}>{errors.address}</p>}
         </div>
 
-        {/* Employment Information */}
-        <h4>Employment Information</h4>
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Employment Status</label>
-            <input
-              type="text"
-              className="form-control"
-              name="employmentStatus"
-              value={formData.employmentStatus}
-              onChange={handleChange}
-              required        
-            />
-            {errors.employmentStatus && <p style={{ color: 'red' }}>{errors.employmentStatus}</p>}
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Employer's Name</label>
-            <input
-              type="text"
-              className="form-control"
-              name="employer"
-              value={formData.employer}
-              onChange={handleChange}
-              required            
-            />
-          </div>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Job Title</label>
-          <input
-            type="text"
-            className="form-control"
-            name="jobTitle"
-            value={formData.jobTitle}
-            onChange={handleChange}
-            required           
-          />
-        </div>
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Monthly Income</label>
-            <input
-              type="number"
-              className="form-control"
-              name="monthlyIncome"
-              value={formData.monthlyIncome}
-              onChange={handleChange}
-              required          
-            />
-            {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Other Sources of Income</label>
-            <input
-              type="text"
-              className="form-control"
-              name="otherIncome"
-              value={formData.otherIncome}
-              onChange={handleChange}
-              required
-            />
-            {errors.otherIncome && <p style={{ color: 'red' }}>{errors.otherIncome}</p>}
-          </div>
-        </div>
+        
 
         {/* Loan Information */}
         <h4>Loan Details</h4>
         <div className="row mb-3">
+          {/* New Account Number Field */}
+        <div className="mb-3">
+          <label className="form-label">Account Number</label>
+          <input
+            type="text"
+            className="form-control"
+            name="accountNumber"
+            value={formData.accountNumber}
+            style={{width:'70%'}}
+            onChange={handleChange}
+            required          
+          />
+        </div>
           <div className="col-md-6">
             <label className="form-label">Loan Amount</label>
             <input
@@ -256,65 +243,57 @@ function Registration() {
             {errors.loanAmount && <p style={{ color: 'red' }}>{errors.loanAmount}</p>}
           </div>
           <div className="col-md-6">
-            <label className="form-label">Loan Purpose</label>
-            <input
-              type="text"
-              className="form-control"
-              name="loanPurpose"
-              value={formData.loanPurpose}
+            <label className="form-label">Loan Term (years)</label>
+            <select
+              className="form-select"
+              name="loanTerm"
+              value={formData.loanTerm}
               onChange={handleChange}
-              required         
-            />
+              required
+            >
+              <option value="">Select Loan Term</option>
+              <option value="1">1 year</option>
+              <option value="2">2 years</option>
+              <option value="3">3 years</option>
+              <option value="4">4 years</option>
+              <option value="5">5 years</option>
+            </select>
+            {errors.loanTerm && <p style={{ color: 'red' }}>{errors.loanTerm}</p>}
           </div>
         </div>
         <div className="mb-3">
-          <label className="form-label">Loan Term (years)</label>
+          <label className="form-label">Monthly Income</label>
           <input
             type="number"
             className="form-control"
-            name="loanTerm"
-            value={formData.loanTerm}
+            name="monthlyIncome"
+            style={{width:'47%'}}
+            value={formData.monthlyIncome}
             onChange={handleChange}
-            required       
+            required          
           />
-          {errors.loanTerm && <p style={{ color: 'red' }}>{errors.loanTerm}</p>}
-        </div>
-
-        {/* Financial Information */}
-        <h4>Financial Information</h4>
-        <div className="row mb-3">
-          <div className="col-md-6">
-            <label className="form-label">Assets</label>
-            <input
-              type="text"
-              className="form-control"
-              name="assets"
-              value={formData.assets}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label">Current Debts</label>
-            <input
-              type="text"
-              className="form-control"
-              name="currentDebts"
-              value={formData.currentDebts}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
         </div>
         <div className="mb-3">
-          <label className="form-label">Collateral (if any)</label>
+          <label className="form-label"style={{ fontWeight: 'bold', color: '#004aad' }}>Interest Rate (%)</label>
           <input
-            type="text"
+            type="number"
             className="form-control"
-            name="collateral"
-            value={formData.collateral}
-            onChange={handleChange}
-            required
+            name="interestRate"
+            style={{ fontWeight: 'bold', color: '#004aad', width:'47%' }}
+            value={formData.interestRate}
+            readOnly       
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label"style={{ fontWeight: 'bold', color: '#004aad' }}>Monthly Interest Amount (LKR)</label>
+          <input
+            type="number"
+            className="form-control"
+            name="monthlyInterestAmount"
+            style={{ fontWeight: 'bold', color: '#004aad', width:'47%' }}
+            value={formData.monthlyInterestAmount}
+            readOnly       
           />
         </div>
 
@@ -335,7 +314,7 @@ function Registration() {
 
         {/* Submit Button */}
         <div className="d-grid">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary "style={{width:'33%'}}>
             Submit
           </button>
         </div>
