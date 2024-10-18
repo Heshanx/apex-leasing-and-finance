@@ -45,7 +45,16 @@ const LeaseRegistration = () => {
       }
 
       try {
-        const response = await axios.post('http://localhost:5000/lease', formData);
+        const response = await axios.post('http://localhost:5000/lease',{
+          ...formData,
+          nic : formData.nic,
+          fullName : formData.fullName,
+          contactNumber : formData.phone,
+          address : formData.address,
+          loanAmount : formData.leaseAmount,
+          loanTerm : formData.leaseTerm,
+          downPayment: formData.downPayment,
+        });
         alert(response.data.message);
         navigate('/dashboard');
 
@@ -254,9 +263,9 @@ const LeaseRegistration = () => {
                     onChange={handleChange}
                   >
                     <option value="">Select Term</option>
-                    <option value="12">12 months</option>
-                    <option value="24">24 months</option>
-                    <option value="36">36 months</option>
+                    <option value="12">12 </option>
+                    <option value="24">24 </option>
+                    <option value="36">36 </option>
                   </select>
                   {errors.leaseTerm && <p style={{ color: 'red' }}>{errors.leaseTerm}</p>}
                 </div>

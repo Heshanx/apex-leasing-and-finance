@@ -138,6 +138,26 @@ app.get('/api/loans', (req, res) => {
       res.status(500).json('Server Error');
     }
   });
+  app.post('/lease', async (req, res) => {
+    try {
+        const { nic, fullName, contactNumber, address, downPayment, leaseAmount, leaseTerm } = req.body;
+        const appro = 'Pending';
+        const ty_loan ='Leasing Loan';
+        const sqlre = "INSERT INTO loanreg (NIC, full_name, Tp_number, address, monthincome, loanAmont, trem, status, type_loan) VALUES(?,?,?,?,?,?,?,?,?)";
+        const Values = [nic, fullName, contactNumber, address, downPayment, leaseAmount, leaseTerm, appro, ty_loan];
+        
+        db.query(sqlre, Values, (err, data) => {
+            if (err) {
+                console.error('Database Error:', err); 
+                return res.status(500).json({ error: 'Database Error: ' + err.message }); 
+            } 
+            res.status(201).json({ message: 'Your application has been submitted and approval is pending', data });
+        });
+    } catch (error) {
+        console.error('Server Error:', error); 
+        res.status(500).json({ error: 'Server Error' }); 
+    }
+});
   
 app.listen(5000,()=>{
     console.log("Listning....");

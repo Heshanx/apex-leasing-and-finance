@@ -55,7 +55,7 @@ export default function leaseValidation(formData)
         error.email = "Please Enter Correct Email Address ";
         isValid = false;
     }
-    if(!mobileregex.test(formData.contactNumber)){
+    if(!mobileregex.test(formData.phone)){
         error.phone = "Wrong Phone number"; 
         isValid = false;
    }
