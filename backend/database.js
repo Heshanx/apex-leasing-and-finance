@@ -94,23 +94,51 @@ app.post('/registration', async (req, res) => {
     try {
         const { nic, fullName, contactNumber, address, monthlyIncome, loanAmount, loanTerm } = req.body;
         const appro = 'Pending';
-        const sqlre = "INSERT INTO loanreg (NIC, full_name, Tp_number, address, monthincome, loanAmont, trem, status) VALUES(?,?,?,?,?,?,?,?)";
-        const Values = [nic, fullName, contactNumber, address, monthlyIncome, loanAmount, loanTerm, appro];
+        const ty_loan ='Personal Loan';
+        const sqlre = "INSERT INTO loanreg (NIC, full_name, Tp_number, address, monthincome, loanAmont, trem, status, type_loan) VALUES(?,?,?,?,?,?,?,?,?)";
+        const Values = [nic, fullName, contactNumber, address, monthlyIncome, loanAmount, loanTerm, appro, ty_loan];
         
         db.query(sqlre, Values, (err, data) => {
             if (err) {
-                console.error('Database Error:', err); // Log the detailed database error
-                return res.status(500).json({ error: 'Database Error: ' + err.message }); // Return a specific error message
+                console.error('Database Error:', err); 
+                return res.status(500).json({ error: 'Database Error: ' + err.message }); 
             } 
             res.status(201).json({ message: 'Your application has been submitted and approval is pending', data });
         });
     } catch (error) {
-        console.error('Server Error:', error); // Log the error
-        res.status(500).json({ error: 'Server Error' }); // Send error response
+        console.error('Server Error:', error); 
+        res.status(500).json({ error: 'Server Error' }); 
     }
 });
 
-
+app.get('/api/loans', (req, res) => {
+    try {
+      const sql = "SELECT * FROM loanreg";
+  
+      db.query(sql, (err, result) => {
+        if (err) {
+          console.log('DATABASE Error', err);
+          return res.status(400).json('Server Error');
+        }
+        
+        if (result.length === 0) {
+          console.log('No loan requests found');
+          return res.status(404).json('No loan requests found');
+        }
+        const loanApplications = result.map(loan => ({
+          type: loan.type_loan,  
+          status: loan.status,
+          date:'2024/10/19',
+        }));
+  
+        res.json(loanApplications);
+      });
+    } catch (error) {
+      console.error('Error fetching loan requests:', error);
+      res.status(500).json('Server Error');
+    }
+  });
+  
 app.listen(5000,()=>{
     console.log("Listning....");
 });
