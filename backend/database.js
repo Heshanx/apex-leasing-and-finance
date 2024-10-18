@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyparser =require('body-parser');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
+const logger = require('./logger'); 
 const saltRound = 10;
 
 
@@ -21,6 +22,7 @@ const db = mysql.createConnection({
 db.connect((err) => {
     if (err) {
         console.log('Error connecting to database:', err);
+        logger.error(`Database Error: ${err}`);
     } else {
         console.log('Connected to MySQL database');
     }
@@ -32,6 +34,7 @@ app.post('/signup',async(req,res)=>{
     const values = [firstname,lastname,position,company,businessArea,Employeement,address,zipcode,country,phonenumber,useremail,heshpassword];   
     db.query(sql,values,(err,data)=>{
         if(err){
+            logger.error(`Database Error: ${err}`);
             return res.status(500).json({ error: err.message });
         } 
         res.status(201).json({ message: 'User signed up successfully', data });
@@ -47,6 +50,7 @@ app.post('/login', async (req, res) => {
     
     if (!captchaValue) {
         console.error('reCAPTCHA Error');
+        logger.error(`reCAPtCHA Error:`);
         return res.status(400).json({ message: 'Please complete reCAPTCHA' });
     }
 
@@ -58,6 +62,7 @@ app.post('/login', async (req, res) => {
         
         if (!success) {
             console.error('reCAPTCHA Verification Failed');
+            logger.error('reCAPTCHA Verification Failed');
             return res.status(400).json({ message: 'reCAPTCHA Verification Failed' });
         }
 
@@ -66,11 +71,13 @@ app.post('/login', async (req, res) => {
         db.query(loginsql, [useremail], async (err, result) => {
             if (err) {
                 console.error('Database error:', err);
+                logger.error(`Database Error: ${err}`);
                 return res.status(500).json({ message: 'Database error', error: err.message });
             }
 
             if (result.length === 0) {
                 console.error('No user found for this email');
+                logger.info('No user found for this email');
                 return res.status(400).json({ message: 'Invalid email or password' });
             }
 
@@ -79,6 +86,7 @@ app.post('/login', async (req, res) => {
 
             if (!isPasswordMatch) {
                 console.error('Invalid password');
+                logger.info('Invalid Password');
                 return res.status(400).json({ message: 'Invalid  password' });
             }
 
@@ -101,12 +109,14 @@ app.post('/registration', async (req, res) => {
         db.query(sqlre, Values, (err, data) => {
             if (err) {
                 console.error('Database Error:', err); 
+                logger.error(`Database Error: ${err}`);
                 return res.status(500).json({ error: 'Database Error: ' + err.message }); 
             } 
             res.status(201).json({ message: 'Your application has been submitted and approval is pending', data });
         });
     } catch (error) {
         console.error('Server Error:', error); 
+        logger.error(`Server Error`);
         res.status(500).json({ error: 'Server Error' }); 
     }
 });
@@ -149,12 +159,14 @@ app.get('/api/loans', (req, res) => {
         db.query(sqlre, Values, (err, data) => {
             if (err) {
                 console.error('Database Error:', err); 
+                logger.error(`Database Error: ${err}`);
                 return res.status(500).json({ error: 'Database Error: ' + err.message }); 
             } 
             res.status(201).json({ message: 'Your application has been submitted and approval is pending', data });
         });
     } catch (error) {
         console.error('Server Error:', error); 
+        logger.error(`Server Error`);
         res.status(500).json({ error: 'Server Error' }); 
     }
 });
