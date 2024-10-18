@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import './LeaseRegistration.css';
-import leaseValidation from '../validation';
+import leaseValidation from '../leasingvalid';
 import { useNavigate } from 'react-router-dom';
 
 const LeaseRegistration = () => {
@@ -208,12 +208,12 @@ const LeaseRegistration = () => {
                     className="form-control"
                     value={formData.vehicleCondition}
                     onChange={handleChange}
+                    required
                   >
                     <option value="">Select Condition</option>
                     <option value="new">New</option>
                     <option value="used">Used</option>
                   </select>
-                  {errors.vehicleCondition && <p style={{ color: 'red' }}>{errors.vehicleCondition}</p>}
                 </div>
 
                 <div className="form-group mb-3">
