@@ -61,7 +61,6 @@ function Registration() {
   }     
   };
 
-
   return (
     <div className="container mt-5">
       <h1 className="mb-4">Registration Form</h1>
@@ -88,8 +87,7 @@ function Registration() {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
-            required
-       
+            required       
           />
         </div>
         <div className="mb-3">

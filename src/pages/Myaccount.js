@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './Myaccount.css';
@@ -11,13 +11,25 @@ const Myaccount = () => {
   const fixedDepositValue = 20;
   const loanValue = 30;
   const leasingValue = 50;
+  const [loanRequests, setLoanRequests] = useState([]);
 
-  const requestStatus = [
-    { type: 'Fixed Deposit', status: 'Approved', date: '10/12/2023' },
-    { type: 'Leasing', status: 'Pending', date: '15/01/2024' },
-    { type: 'Loan', status: 'Rejected', date: '08/12/2023' }
-  ];
-
+  useEffect(() => {
+    fetch('http://localhost:5000/api/loans') 
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Fetched loan requests:', data);
+        setLoanRequests(data);
+      })
+      .catch(error => {
+        console.error('Error fetching loan requests:', error);
+      });
+  }, []);
+  
   const recentTransections = [
     { type: 'Money Transfer - AccNo 123XXXX', value: '15000LKR' },
     { type: 'Ongoing Lease Installment', value: '39000LKR' },
@@ -180,11 +192,15 @@ const Myaccount = () => {
             <div className="card-body">
               <h5 className="card-title">Request Status</h5>
               <ul className="list-group">
-                {requestStatus.map((item, index) => (
-                  <li key={index} className="list-group-item">
-                    {item.type}: <strong>{item.status}</strong> ({item.date})
-                  </li>
-                ))}
+              {loanRequests.length === 0 ? (
+                  <li className="list-group-item">No Loan Requests</li>
+                ) : (
+                  loanRequests.map((request, index) => (
+                    <li key={index} className="list-group-item">
+                      {request.type}: <strong>{request.status}</strong> ({request.date})
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </div>
