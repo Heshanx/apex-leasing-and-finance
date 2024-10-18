@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import registrationform from '../restvalidation';
 import axios from 'axios';
@@ -23,42 +23,42 @@ function Registration() {
     assets: '',
     currentDebts: '',
     collateral: '',
-    tin : '',
+    tin: '',
     consent: false
   });
-  const [errors,seterror] = useState({});
+  const [errors, seterror] = useState({});
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value} = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]:value,
+      [name]: value,
     });
   };
 
   // Handle form submission
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationerror = registrationform(formData) ;
+    const validationerror = registrationform(formData);
     seterror(validationerror.error);
-    if(validationerror.error){
-      try{
-    const response = await axios.post('http://localhost:5000/registration',{
-      ...formData,
-      nic : formData.nic,
-      fullName : formData.fullName,
-      contactNumber : formData.contactNumber,
-      address : formData.address,
-      monthlyIncome: formData.monthlyIncome,
-      loanAmount : formData.loanAmount,
-      loanTerm : formData.loanTerm,
-      });
-    }catch(error){
-      console.error('Please Check the details Again',error.message);
-      alert('Please Check Details Again')
+    if (!validationerror.error) {
+      try {
+        const response = await axios.post('http://localhost:5000/registration', {
+          ...formData,
+          nic: formData.nic,
+          fullName: formData.fullName,
+          contactNumber: formData.contactNumber,
+          address: formData.address,
+          monthlyIncome: formData.monthlyIncome,
+          loanAmount: formData.loanAmount,
+          loanTerm: formData.loanTerm,
+        });
+      } catch (error) {
+        console.error('Please Check the details Again', error.message);
+        alert('Please Check Details Again');
+      }
     }
-  }     
   };
 
   return (
@@ -67,28 +67,30 @@ function Registration() {
       <form onSubmit={handleSubmit}>
         {/* Personal Information */}
         <h4>Personal Information</h4>
-        <div className="mb-3">
-          <label className="form-label">Full Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange} 
-            required          
-          />
-          {errors.fullName && <p style={{ color: 'red' }}>{errors.fullName}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Date of Birth</label>
-          <input
-            type="date"
-            className="form-control"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleChange}
-            required       
-          />
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Full Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange} 
+              required          
+            />
+            {errors.fullName && <p style={{ color: 'red' }}>{errors.fullName}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Date of Birth</label>
+            <input
+              type="date"
+              className="form-control"
+              name="dateOfBirth"
+              value={formData.dateOfBirth}
+              onChange={handleChange}
+              required       
+            />
+          </div>
         </div>
         <div className="mb-3">
           <label className="form-label">Gender</label>
@@ -105,56 +107,60 @@ function Registration() {
             <option value="other">Other</option>
           </select>
         </div>
-        <div className="mb-3">
-          <label className="form-label">National Identity Card Number (NIC)</label>
-          <input
-            type="text"
-            className="form-control"
-            name="nic"
-            value={formData.ssn}
-            onChange={handleChange}
-            required        
-          />
-          {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Taxpayer Identityfication Number (TIN)</label>
-          <input
-            type="text"
-            className="form-control"
-            name="tin"
-            value={formData.ssn}
-            onChange={handleChange}
-            required          
-          />
-          {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">National Identity Card Number (NIC)</label>
+            <input
+              type="text"
+              className="form-control"
+              name="nic"
+              value={formData.nic}
+              onChange={handleChange}
+              required        
+            />
+            {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Taxpayer Identification Number (TIN)</label>
+            <input
+              type="text"
+              className="form-control"
+              name="tin"
+              value={formData.tin}
+              onChange={handleChange}
+              required          
+            />
+            {errors.tin && <p style={{ color: 'red' }}>{errors.tin}</p>}
+          </div>
         </div>
 
         {/* Contact Information */}
         <h4>Contact Information</h4>
-        <div className="mb-3">
-          <label className="form-label">Contact Number</label>
-          <input
-            type="text"
-            className="form-control"
-            name="contactNumber"
-            value={formData.contactNumber}
-            onChange={handleChange}  
-            required        
-          />
-           {errors.contactNumber && <p style={{ color: 'red' }}>{errors.contactNumber}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Email Address</label>
-          <input
-            type="email"
-            className="form-control"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required          
-          />
-          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Contact Number</label>
+            <input
+              type="text"
+              className="form-control"
+              name="contactNumber"
+              value={formData.contactNumber}
+              onChange={handleChange}  
+              required        
+            />
+            {errors.contactNumber && <p style={{ color: 'red' }}>{errors.contactNumber}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Email Address</label>
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required          
+            />
+            {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+          </div>
         </div>
         <div className="mb-3">
           <label className="form-label">Residential Address</label>
@@ -171,28 +177,30 @@ function Registration() {
 
         {/* Employment Information */}
         <h4>Employment Information</h4>
-        <div className="mb-3">
-          <label className="form-label">Employment Status</label>
-          <input
-            type="text"
-            className="form-control"
-            name="employmentStatus"
-            value={formData.employmentStatus}
-            onChange={handleChange}
-            required        
-          />
-          {errors.employmentStatus && <p style={{ color: 'red' }}>{errors.employmentStatus}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Employer's Name</label>
-          <input
-            type="text"
-            className="form-control"
-            name="employer"
-            value={formData.employer}
-            onChange={handleChange}
-            required            
-          />
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Employment Status</label>
+            <input
+              type="text"
+              className="form-control"
+              name="employmentStatus"
+              value={formData.employmentStatus}
+              onChange={handleChange}
+              required        
+            />
+            {errors.employmentStatus && <p style={{ color: 'red' }}>{errors.employmentStatus}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Employer's Name</label>
+            <input
+              type="text"
+              className="form-control"
+              name="employer"
+              value={formData.employer}
+              onChange={handleChange}
+              required            
+            />
+          </div>
         </div>
         <div className="mb-3">
           <label className="form-label">Job Title</label>
@@ -205,55 +213,59 @@ function Registration() {
             required           
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">Monthly Income</label>
-          <input
-            type="number"
-            className="form-control"
-            name="monthlyIncome"
-            value={formData.monthlyIncome}
-            onChange={handleChange}
-            required          
-          />
-          {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Other Sources of Income</label>
-          <input
-            type="text"
-            className="form-control"
-            name="otherIncome"
-            value={formData.otherIncome}
-            onChange={handleChange}
-            required
-          />
-          {errors.otherIncome && <p style={{ color: 'red' }}>{errors.otherIncome}</p>}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Monthly Income</label>
+            <input
+              type="number"
+              className="form-control"
+              name="monthlyIncome"
+              value={formData.monthlyIncome}
+              onChange={handleChange}
+              required          
+            />
+            {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Other Sources of Income</label>
+            <input
+              type="text"
+              className="form-control"
+              name="otherIncome"
+              value={formData.otherIncome}
+              onChange={handleChange}
+              required
+            />
+            {errors.otherIncome && <p style={{ color: 'red' }}>{errors.otherIncome}</p>}
+          </div>
         </div>
 
         {/* Loan Information */}
         <h4>Loan Details</h4>
-        <div className="mb-3">
-          <label className="form-label">Loan Amount</label>
-          <input
-            type="number"
-            className="form-control"
-            name="loanAmount"
-            value={formData.loanAmount}
-            onChange={handleChange}
-            required          
-          />
-          {errors.loanAmount && <p style={{ color: 'red' }}>{errors.loanAmount}</p>}
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Loan Purpose</label>
-          <input
-            type="text"
-            className="form-control"
-            name="loanPurpose"
-            value={formData.loanPurpose}
-            onChange={handleChange}
-            required         
-          />
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Loan Amount</label>
+            <input
+              type="number"
+              className="form-control"
+              name="loanAmount"
+              value={formData.loanAmount}
+              onChange={handleChange}
+              required          
+            />
+            {errors.loanAmount && <p style={{ color: 'red' }}>{errors.loanAmount}</p>}
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Loan Purpose</label>
+            <input
+              type="text"
+              className="form-control"
+              name="loanPurpose"
+              value={formData.loanPurpose}
+              onChange={handleChange}
+              required         
+            />
+          </div>
         </div>
         <div className="mb-3">
           <label className="form-label">Loan Term (years)</label>
@@ -270,27 +282,29 @@ function Registration() {
 
         {/* Financial Information */}
         <h4>Financial Information</h4>
-        <div className="mb-3">
-          <label className="form-label">Assets</label>
-          <input
-            type="text"
-            className="form-control"
-            name="assets"
-            value={formData.assets}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Current Debts</label>
-          <input
-            type="text"
-            className="form-control"
-            name="currentDebts"
-            value={formData.currentDebts}
-            onChange={handleChange}
-            required
-          />
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label className="form-label">Assets</label>
+            <input
+              type="text"
+              className="form-control"
+              name="assets"
+              value={formData.assets}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <label className="form-label">Current Debts</label>
+            <input
+              type="text"
+              className="form-control"
+              name="currentDebts"
+              value={formData.currentDebts}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
         <div className="mb-3">
           <label className="form-label">Collateral (if any)</label>
@@ -331,7 +345,3 @@ function Registration() {
 }
 
 export default Registration;
-
-
-
-
