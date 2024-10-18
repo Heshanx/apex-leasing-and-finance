@@ -4,6 +4,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import './Myaccount.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useLocation } from 'react-router-dom';
 
 const Myaccount = () => {
   // Sample data for visualization
@@ -29,7 +30,6 @@ const Myaccount = () => {
         console.error('Error fetching loan requests:', error);
       });
   }, []);
-  
   const recentTransections = [
     { type: 'Money Transfer - AccNo 123XXXX', value: '15000LKR' },
     { type: 'Ongoing Lease Installment', value: '39000LKR' },

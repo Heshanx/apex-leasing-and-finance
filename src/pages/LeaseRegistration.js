@@ -112,7 +112,16 @@ const LeaseRegistration = () => {
     if (!valid) return;
 
     try {
-      const response = await axios.post('http://localhost:5000/lease-registration', formData);
+      const requestData = {
+        nic: formData.nationalID,      // Ma p nationalID to nic
+        fullName: `${formData.firstName} ${formData.lastName}`,  // Combine first and last name into full_name
+        contactNumber: formData.phoneNumber,
+        address: `${formData.address}, ${formData.city}`,
+        downPayment: formData.downPayment,
+        leaseAmount: formData.leaseAmount,
+        leaseTerm: formData.leaseTerm
+      };
+      const response = await axios.post('http://localhost:5000/lease-registration',requestData);
       alert(response.data.message);
       // Clear form
       setFormData({

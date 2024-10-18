@@ -84,14 +84,15 @@ app.post('/login', async (req, res) => {
             const heshpassword = await bcrypt.hash(userpassword, saltRound);
             const isPasswordMatch = await bcrypt.compare(userpassword, heshpassword);
 
-            if (!isPasswordMatch) {
+            if (!isPasswordMatch == userpassword) {
                 console.error('Invalid password');
                 logger.info('Invalid Password');
-                return res.status(400).json({ message: 'Invalid  password' });
+                return res.status(400).json({ message:'Invalid  password' });
             }
 
             res.status(200).json({ message: 'LOGIN SUCCESSFUL' });
         });
+    
     } catch (error) {
         console.error('Error during login:', error);
         return res.status(500).json({ message: 'Internal server error', error: error.message });
@@ -123,22 +124,20 @@ app.post('/registration', async (req, res) => {
 
 app.get('/api/loans', (req, res) => {
     try {
-      const sql = "SELECT * FROM loanreg";
-  
+      const sql = "SELECT * FROM loanreg";  
       db.query(sql, (err, result) => {
         if (err) {
           console.log('DATABASE Error', err);
           return res.status(400).json('Server Error');
-        }
-        
+        }       
         if (result.length === 0) {
           console.log('No loan requests found');
           return res.status(404).json('No loan requests found');
         }
         const loanApplications = result.map(loan => ({
-          type: loan.type_loan,  
+          type: loan.type_loan, 
           status: loan.status,
-          date:'2024/10/19',
+          date: '2024/10/19',
         }));
   
         res.json(loanApplications);
@@ -148,7 +147,8 @@ app.get('/api/loans', (req, res) => {
       res.status(500).json('Server Error');
     }
   });
-  app.post('/lease', async (req, res) => {
+  
+  app.post('/lease-registration', async (req, res) => {
     try {
         const { nic, fullName, contactNumber, address, downPayment, leaseAmount, leaseTerm } = req.body;
         const appro = 'Pending';

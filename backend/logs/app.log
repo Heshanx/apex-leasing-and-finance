@@ -1,2 +1,13 @@
 2024-10-19 00:40:29 [INFO]: No user found for this email
 2024-10-19 00:44:18 [ERROR]: Database Error: Error: ER_DUP_ENTRY: Duplicate entry '0' for key 'PRIMARY'
+2024-10-19 03:21:07 [INFO]: No user found for this email
+2024-10-19 03:21:18 [INFO]: No user found for this email
+2024-10-19 03:22:26 [INFO]: No user found for this email
+2024-10-19 03:22:29 [ERROR]: reCAPTCHA Verification Failed
+2024-10-19 03:24:43 [INFO]: No user found for this email
+2024-10-19 03:50:26 [ERROR]: Database Error: Error: ER_BAD_NULL_ERROR: Column 'NIC' cannot be null
+2024-10-19 03:51:55 [ERROR]: Database Error: Error: ER_BAD_NULL_ERROR: Column 'NIC' cannot be null
+2024-10-19 03:58:47 [ERROR]: Database Error: Error: ER_BAD_NULL_ERROR: Column 'NIC' cannot be null
+2024-10-19 03:59:00 [ERROR]: Database Error: Error: ER_BAD_NULL_ERROR: Column 'NIC' cannot be null
+2024-10-19 04:00:33 [ERROR]: Database Error: Error: ER_DUP_ENTRY: Duplicate entry '2147483647' for key 'PRIMARY'
+2024-10-19 04:06:45 [INFO]: No user found for this email

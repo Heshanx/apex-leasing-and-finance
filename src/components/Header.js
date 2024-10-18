@@ -113,7 +113,7 @@ const Header = () => {
                   to="/"
                   style={{ backgroundColor: '#ffbd59', color: '#fff' }} // Apply toggled color
                 >
-                  <b>Login</b>
+                  <b>Loginout</b>
                 </Link>
               </li>
 
