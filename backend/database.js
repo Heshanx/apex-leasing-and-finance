@@ -90,23 +90,27 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
-app.post('/registration',async(req,res)=>{
-    try{
-    const {nic,fullName,contactNumber,address,monthlyIncome,loanAmount,loanTerm}=req.body
-    const appro = 'Pending';
-    const sqlre = "INSERT INTO loanreg (NIC,full_name,Tp_number,address,monthincome,loanAmont,trem,status) VALUES(?,?,?,?,?,?,?,?)";
-    const Values =[nic,fullName,contactNumber,address,monthlyIncome,loanAmount,loanTerm,appro];
-    db.query(sqlre,Values,(err,data)=>{
-        if(err){
-            console.log(res.status(500).json({ error: err.message }));
-        } 
-        res.status(201).json({ message: 'You Application Submited And Approval pending', data });
-    });
-}catch(error){
-    console.log(error);
-}
+app.post('/registration', async (req, res) => {
+    try {
+        const { nic, fullName, contactNumber, address, monthlyIncome, loanAmount, loanTerm } = req.body;
+        const appro = 'Pending';
+        const sqlre = "INSERT INTO loanreg (NIC, full_name, Tp_number, address, monthincome, loanAmont, trem, status) VALUES(?,?,?,?,?,?,?,?)";
+        const Values = [nic, fullName, contactNumber, address, monthlyIncome, loanAmount, loanTerm, appro];
+        
+        db.query(sqlre, Values, (err, data) => {
+            if (err) {
+                console.error('Database Error:', err); // Log the detailed database error
+                return res.status(500).json({ error: 'Database Error: ' + err.message }); // Return a specific error message
+            } 
+            res.status(201).json({ message: 'Your application has been submitted and approval is pending', data });
+        });
+    } catch (error) {
+        console.error('Server Error:', error); // Log the error
+        res.status(500).json({ error: 'Server Error' }); // Send error response
+    }
 });
+
+
 app.listen(5000,()=>{
     console.log("Listning....");
 });

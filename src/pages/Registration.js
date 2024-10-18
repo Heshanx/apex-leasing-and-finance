@@ -43,6 +43,7 @@ function Registration() {
     const validationerror = registrationform(formData) ;
     seterror(validationerror.error);
     if(validationerror.error){
+      try{
     const response = await axios.post('http://localhost:5000/registration',{
       ...formData,
       nic : formData.nic,
@@ -53,7 +54,11 @@ function Registration() {
       loanAmount : formData.loanAmount,
       loanTerm : formData.loanTerm,
       });
+    }catch(error){
+      console.error('Please Check the details Again',error.message);
+      alert('Please Check Details Again')
     }
+  }     
   };
 
 
@@ -70,7 +75,8 @@ function Registration() {
             className="form-control"
             name="fullName"
             value={formData.fullName}
-            onChange={handleChange}           
+            onChange={handleChange} 
+            required          
           />
           {errors.fullName && <p style={{ color: 'red' }}>{errors.fullName}</p>}
         </div>
@@ -82,6 +88,7 @@ function Registration() {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
+            required
        
           />
         </div>
@@ -92,7 +99,7 @@ function Registration() {
             name="gender"
             value={formData.gender}
             onChange={handleChange}
-           
+            required
           >
             <option value="">Select Gender</option>
             <option value="male">Male</option>
@@ -108,7 +115,7 @@ function Registration() {
             name="nic"
             value={formData.ssn}
             onChange={handleChange}
-        
+            required        
           />
           {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
         </div>
@@ -120,7 +127,7 @@ function Registration() {
             name="tin"
             value={formData.ssn}
             onChange={handleChange}
-          
+            required          
           />
           {errors.nic && <p style={{ color: 'red' }}>{errors.nic}</p>}
         </div>
@@ -134,7 +141,8 @@ function Registration() {
             className="form-control"
             name="contactNumber"
             value={formData.contactNumber}
-            onChange={handleChange}          
+            onChange={handleChange}  
+            required        
           />
            {errors.contactNumber && <p style={{ color: 'red' }}>{errors.contactNumber}</p>}
         </div>
@@ -146,7 +154,7 @@ function Registration() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-          
+            required          
           />
           {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
         </div>
@@ -158,7 +166,7 @@ function Registration() {
             name="address"
             value={formData.address}
             onChange={handleChange}
-           
+            required           
           />
           {errors.address && <p style={{ color: 'red' }}>{errors.address}</p>}
         </div>
@@ -173,7 +181,7 @@ function Registration() {
             name="employmentStatus"
             value={formData.employmentStatus}
             onChange={handleChange}
-        
+            required        
           />
           {errors.employmentStatus && <p style={{ color: 'red' }}>{errors.employmentStatus}</p>}
         </div>
@@ -185,7 +193,7 @@ function Registration() {
             name="employer"
             value={formData.employer}
             onChange={handleChange}
-            
+            required            
           />
         </div>
         <div className="mb-3">
@@ -196,7 +204,7 @@ function Registration() {
             name="jobTitle"
             value={formData.jobTitle}
             onChange={handleChange}
-           
+            required           
           />
         </div>
         <div className="mb-3">
@@ -207,7 +215,7 @@ function Registration() {
             name="monthlyIncome"
             value={formData.monthlyIncome}
             onChange={handleChange}
-          
+            required          
           />
           {errors.monthlyIncome && <p style={{ color: 'red' }}>{errors.monthlyIncome}</p>}
         </div>
@@ -219,6 +227,7 @@ function Registration() {
             name="otherIncome"
             value={formData.otherIncome}
             onChange={handleChange}
+            required
           />
           {errors.otherIncome && <p style={{ color: 'red' }}>{errors.otherIncome}</p>}
         </div>
@@ -233,7 +242,7 @@ function Registration() {
             name="loanAmount"
             value={formData.loanAmount}
             onChange={handleChange}
-          
+            required          
           />
           {errors.loanAmount && <p style={{ color: 'red' }}>{errors.loanAmount}</p>}
         </div>
@@ -245,7 +254,7 @@ function Registration() {
             name="loanPurpose"
             value={formData.loanPurpose}
             onChange={handleChange}
-         
+            required         
           />
         </div>
         <div className="mb-3">
@@ -256,7 +265,7 @@ function Registration() {
             name="loanTerm"
             value={formData.loanTerm}
             onChange={handleChange}
-       
+            required       
           />
           {errors.loanTerm && <p style={{ color: 'red' }}>{errors.loanTerm}</p>}
         </div>
@@ -271,6 +280,7 @@ function Registration() {
             name="assets"
             value={formData.assets}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
@@ -281,6 +291,7 @@ function Registration() {
             name="currentDebts"
             value={formData.currentDebts}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
@@ -291,6 +302,7 @@ function Registration() {
             name="collateral"
             value={formData.collateral}
             onChange={handleChange}
+            required
           />
         </div>
 
